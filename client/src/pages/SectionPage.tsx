@@ -1,7 +1,7 @@
 import { useRoute } from "wouter";
 import { useSection, useSections } from "@/hooks/use-sections";
 import { ArticleLayout } from "@/components/ArticleLayout";
-import ReactMarkdown from "react-markdown";
+import { InteractiveContent } from "@/components/InteractiveContent";
 import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import NotFound from "./not-found";
@@ -40,23 +40,24 @@ export default function SectionPage() {
     return <NotFound />;
   }
 
-  // Determine navigation
   const sortedSections = allSections?.sort((a, b) => a.order - b.order) || [];
   const currentIndex = sortedSections.findIndex(s => s.id === section.id);
   const prevSection = currentIndex > 0 ? sortedSections[currentIndex - 1] : null;
   const nextSection = currentIndex < sortedSections.length - 1 ? sortedSections[currentIndex + 1] : null;
+
+  const isReference = ["sources", "appendix"].includes(section.slug);
 
   return (
     <ArticleLayout 
       prevSection={prevSection} 
       nextSection={nextSection}
     >
-      <article className="prose prose-lg md:prose-xl mx-auto">
+      <article className="prose prose-lg md:prose-xl mx-auto" data-testid={`section-${section.slug}`}>
         <header className="mb-12 not-prose">
           <div className="flex items-center space-x-4 mb-6">
             <span className="h-px flex-1 bg-border"></span>
             <span className="font-mono text-sm text-accent uppercase tracking-widest">
-              Chapter {String(section.order).padStart(2, '0')}
+              {isReference ? "Reference" : `Chapter ${String(section.order).padStart(2, '0')}`}
             </span>
             <span className="h-px flex-1 bg-border"></span>
           </div>
@@ -66,9 +67,21 @@ export default function SectionPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight text-center mb-8"
+            data-testid="text-section-title"
           >
             {section.title}
           </motion.h1>
+
+          {section.slug === "intro" && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-center font-serif italic text-muted-foreground text-lg"
+            >
+              AGI, Oversight, and the Business of Artificial Intelligence
+            </motion.p>
+          )}
         </header>
 
         <motion.div
@@ -76,30 +89,19 @@ export default function SectionPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <ReactMarkdown
-            components={{
-              // Override default elements with our styled classes
-              h1: ({node, ...props}) => <h2 className="hidden" {...props} />, // Main title is handled above
-              img: ({node, ...props}) => (
-                <figure className="my-10">
-                  <img 
-                    {...props} 
-                    className="rounded-lg shadow-lg border border-border w-full" 
-                    alt={props.alt || "Article illustration"}
-                  />
-                  {props.alt && (
-                    <figcaption className="text-center text-sm font-sans text-muted-foreground mt-3 italic">
-                      {props.alt}
-                    </figcaption>
-                  )}
-                </figure>
-              ),
-              hr: () => <div className="w-16 h-1 bg-accent/20 mx-auto my-12 rounded-full" />,
-            }}
-          >
-            {section.content}
-          </ReactMarkdown>
+          <InteractiveContent content={section.content} />
         </motion.div>
+
+        {section.slug === "intro" && (
+          <div className="not-prose mt-12 p-6 bg-secondary/30 rounded-md border border-border/50" data-testid="reading-guide">
+            <p className="font-sans text-sm text-muted-foreground mb-2 font-medium uppercase tracking-wider">How to read this</p>
+            <p className="font-serif text-base text-foreground/80 leading-relaxed">
+              Dotted underlines indicate key terms. Hover or tap them for quick definitions. 
+              Use the glossary button in the sidebar for a full reference. 
+              Some sections contain expandable deep-dives for additional context.
+            </p>
+          </div>
+        )}
       </article>
     </ArticleLayout>
   );

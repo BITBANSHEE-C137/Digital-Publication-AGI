@@ -1,7 +1,9 @@
 import { Sidebar } from "./Sidebar";
+import { ReadingProgress } from "./ReadingProgress";
+import { GlossaryPanel } from "./GlossaryTooltip";
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ReactNode, useState } from "react";
+import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "wouter";
 
 interface ArticleLayoutProps {
@@ -11,9 +13,12 @@ interface ArticleLayoutProps {
 }
 
 export function ArticleLayout({ children, prevSection, nextSection }: ArticleLayoutProps) {
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent/20">
-      <Sidebar />
+      <ReadingProgress />
+      <Sidebar onOpenGlossary={() => setGlossaryOpen(true)} />
       
       <main className="lg:pl-72 min-h-screen pt-20 lg:pt-0">
         <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 lg:px-16">
@@ -29,7 +34,6 @@ export function ArticleLayout({ children, prevSection, nextSection }: ArticleLay
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Footer */}
           {(prevSection || nextSection) && (
             <motion.div 
               initial={{ opacity: 0 }}
@@ -39,7 +43,7 @@ export function ArticleLayout({ children, prevSection, nextSection }: ArticleLay
             >
               <div className="flex flex-col items-start">
                 {prevSection && (
-                  <Link href={`/section/${prevSection.slug}`} className="group w-full">
+                  <Link href={`/section/${prevSection.slug}`} className="group w-full" data-testid="link-prev-section">
                     <span className="flex items-center text-sm font-sans text-muted-foreground mb-2 group-hover:text-accent transition-colors">
                       <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
                       Previous
@@ -53,7 +57,7 @@ export function ArticleLayout({ children, prevSection, nextSection }: ArticleLay
               
               <div className="flex flex-col items-end text-right">
                 {nextSection && (
-                  <Link href={`/section/${nextSection.slug}`} className="group w-full">
+                  <Link href={`/section/${nextSection.slug}`} className="group w-full" data-testid="link-next-section">
                     <span className="flex items-center justify-end text-sm font-sans text-muted-foreground mb-2 group-hover:text-accent transition-colors">
                       Next
                       <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
@@ -68,6 +72,8 @@ export function ArticleLayout({ children, prevSection, nextSection }: ArticleLay
           )}
         </div>
       </main>
+
+      <GlossaryPanel isOpen={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
     </div>
   );
 }
