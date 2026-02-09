@@ -3,23 +3,30 @@ import { ReadingProgress } from "./ReadingProgress";
 import { GlossaryPanel } from "./GlossaryTooltip";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactNode, useState } from "react";
-import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 interface ArticleLayoutProps {
   children: ReactNode;
   prevSection?: { slug: string; title: string } | null;
   nextSection?: { slug: string; title: string } | null;
+  heroContent?: ReactNode;
 }
 
-export function ArticleLayout({ children, prevSection, nextSection }: ArticleLayoutProps) {
+export function ArticleLayout({ children, prevSection, nextSection, heroContent }: ArticleLayoutProps) {
   const [glossaryOpen, setGlossaryOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent/20">
       <ReadingProgress />
       <Sidebar onOpenGlossary={() => setGlossaryOpen(true)} />
-      
+
+      {heroContent && (
+        <div className="relative">
+          {heroContent}
+        </div>
+      )}
+
       <main className="lg:pl-72 min-h-screen pt-20 lg:pt-0">
         <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 lg:px-16">
           <AnimatePresence mode="wait">
