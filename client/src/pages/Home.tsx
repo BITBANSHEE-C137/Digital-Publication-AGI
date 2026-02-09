@@ -1,11 +1,54 @@
 import { ArticleLayout } from "@/components/ArticleLayout";
 import { useSections } from "@/hooks/use-sections";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, ArrowDown } from "lucide-react";
+import { ArrowRight, BookOpen, ArrowDown, Download, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState, useRef, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+
+const TLDR_PARAGRAPHS = [
+  "What if the people responsible for keeping AI safe are losing the ability to do so, not because AI is too powerful, but because we've already stopped thinking for ourselves?",
+  "This paper introduces the Safety Inversion: as AI systems grow more capable, the humans tasked with overseeing them are becoming measurably less equipped for the job. PIAAC and NAEP data show that the specific skills oversight requires\u2014sustained analytical reading, proportional reasoning, independent source evaluation\u2014peaked in the U.S. population around 2000 and have declined since.",
+  "The decline isn't about getting dumber. It's a cognitive recomposition: newer cohorts gained faster pattern recognition, interface fluency, and multi-system coordination\u2014skills optimized for collaboration with AI. What eroded are the skills required for supervision of AI. Those are different relationships, and they require different cognitive toolkits.",
+  "The paper defines five behavioral pillars for AGI and identifies Pillar 4 (persistent memory and belief revision) as the critical fault line. Not because it can't be engineered, but because a system that genuinely remembers, updates its beliefs, and maintains coherent identity over time is a system that forms preferences, develops judgment, and resists correction. Industry is building memory as a feature. It is not building memory as cognition.",
+  "Three dynamics are converging: the capability gap is widening, oversight capacity is narrowing, and market incentives are fragmenting AI into monetizable tools rather than integrated intelligence. The result is a population optimized to use AI but not equipped to govern it, building systems too capable to oversee, operated by a population losing the capacity to try.",
+  "Written from 30 years inside the machine, from encrypted satellite communications in forward-deployed combat zones to enterprise cloud architecture, this is a thought experiment about what happens when we burn the teletypes.",
+];
 
 function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
+  const [showPopup, setShowPopup] = useState(false);
+  const [tldrOpen, setTldrOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMouseEnter = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
+    setShowPopup(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideTimeoutRef.current = setTimeout(() => {
+      setShowPopup(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    };
+  }, []);
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden hero-dark-section">
       <div
@@ -57,22 +100,74 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
             </p>
           </div>
 
-          <div className="pt-8">
+          <div className="pt-8 flex flex-col items-center gap-4">
             {firstSectionSlug ? (
-              <Link href={`/section/${firstSectionSlug}`}>
-                <Button
-                  variant="outline"
-                  className="rounded-full hero-cta-button"
-                  data-testid="button-start-reading"
-                >
-                  <BookOpen className="w-5 h-5 mr-3" />
-                  Start Reading
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </Link>
+              <div
+                className="relative"
+                ref={buttonRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <Link href={`/section/${firstSectionSlug}`}>
+                  <Button
+                    variant="outline"
+                    className="rounded-full hero-cta-button"
+                    data-testid="button-start-reading"
+                  >
+                    <BookOpen className="w-5 h-5 mr-3" />
+                    Start Reading
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+
+                <AnimatePresence>
+                  {showPopup && (
+                    <motion.div
+                      ref={popupRef}
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 hero-hover-popup"
+                      data-testid="popup-reading-choices"
+                    >
+                      <div className="flex flex-col gap-1 p-2 min-w-[240px]">
+                        <div className="px-3 py-1.5 mb-1">
+                          <span className="font-mono text-[9px] tracking-widest uppercase" style={{ color: 'hsl(var(--bb-teal) / 0.4)' }}>
+                            Or, if you're short on time...
+                          </span>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setShowPopup(false);
+                            setTldrOpen(true);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-sans hero-popup-item"
+                          data-testid="button-popup-tldr"
+                        >
+                          <FileText className="w-4 h-4 flex-shrink-0" />
+                          <span>TL;DR &mdash; The Short Version</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ) : (
               <div className="animate-pulse hero-loading" data-testid="text-hero-loading">Loading content...</div>
             )}
+
+            <a
+              href="/When_We_Outsourced_Thinking.pdf"
+              download
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
+              data-testid="link-download-pdf"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download PDF
+            </a>
           </div>
         </motion.div>
 
@@ -85,6 +180,55 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
           <ArrowDown className="w-5 h-5 animate-bounce hero-scroll-hint" data-testid="icon-scroll-hint" />
         </motion.div>
       </div>
+
+      <Dialog open={tldrOpen} onOpenChange={setTldrOpen}>
+        <DialogContent className="tldr-dialog max-w-2xl max-h-[85vh] overflow-y-auto custom-scrollbar" data-testid="dialog-tldr">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl hero-title-accent tldr-dialog-title">
+              TL;DR
+            </DialogTitle>
+            <DialogDescription className="font-mono text-[10px] tracking-widest uppercase hero-subtitle">
+              The thesis in six paragraphs
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            {TLDR_PARAGRAPHS.map((paragraph, i) => (
+              <p
+                key={i}
+                className={`font-serif text-sm leading-relaxed ${i === 0 ? "text-foreground/90 text-base italic" : "text-foreground/75"}`}
+                data-testid={`text-tldr-paragraph-${i}`}
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+          <div className="mt-6 pt-4 flex flex-wrap items-center justify-between gap-3" style={{ borderTop: '1px solid hsl(var(--border))' }}>
+            {firstSectionSlug && (
+              <Link href={`/section/${firstSectionSlug}`}>
+                <Button
+                  variant="outline"
+                  className="rounded-full hero-cta-button"
+                  data-testid="button-tldr-start-reading"
+                  onClick={() => setTldrOpen(false)}
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Read the Full Paper
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            )}
+            <a
+              href="/When_We_Outsourced_Thinking.pdf"
+              download
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
+              data-testid="link-tldr-download-pdf"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download PDF
+            </a>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
