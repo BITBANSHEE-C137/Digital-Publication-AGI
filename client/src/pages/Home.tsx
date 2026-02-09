@@ -104,7 +104,7 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="pt-6"
+            className="pt-6 flex justify-center"
           >
             <ArrowDown className="w-5 h-5 animate-bounce hero-scroll-hint" data-testid="icon-scroll-hint" />
           </motion.div>
