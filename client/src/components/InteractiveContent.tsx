@@ -165,6 +165,8 @@ export function InteractiveContent({ content, sectionSlug }: InteractiveContentP
     "we are innovating ourselves backward",
     "Capital does what capital always does: it collapses possibility space into sellable SKUs.",
     "Who is allowed to build something that is not immediately monetizable",
+    "The recomposition produced a population optimized for collaboration with AI",
+    "the gap between what we can do with AI and what we can do about AI is the gap this paper is about",
   ];
 
   const shouldShowViz = (textContent: string): React.ReactNode | null => {

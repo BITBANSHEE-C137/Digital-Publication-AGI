@@ -24,7 +24,7 @@ function cleanupMarkdown(text: string): string {
 }
 
 async function parseDocx(): Promise<string> {
-  const filePath = path.join(process.cwd(), "attached_assets/When_We_Outsourced_Thinking_v1_1770651729078.docx");
+  const filePath = path.join(process.cwd(), "attached_assets/When_We_Outsourced_Thinking_v2_1770657842106.docx");
   const buffer = fs.readFileSync(filePath);
   const result = await mammoth.convertToMarkdown({ buffer });
   return unescapeMarkdown(result.value);
@@ -130,7 +130,9 @@ async function seed() {
     console.log(`    First 100: ${s.content.substring(0, 100).replace(/\n/g, ' ')}...`);
   }
   
-  console.log("\nInserting into database...");
+  console.log("\nClearing existing sections...");
+  await db.delete(sections);
+  console.log("Inserting into database...");
   await db.insert(sections).values(sectionData);
   console.log("Database seeded successfully!");
   

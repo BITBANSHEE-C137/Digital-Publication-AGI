@@ -133,6 +133,20 @@ export const verifiableClaims: VerifiableClaim[] = [
     category: "research",
     section: "skills",
   },
+  {
+    id: "sparrow-google-effects",
+    textMatch: "Sparrow, B., Liu, J., & Wegner, D. M.",
+    searchQuery: "Sparrow Liu Wegner 2011 Google effects memory cognitive consequences Science",
+    category: "research",
+    section: "sources",
+  },
+  {
+    id: "green-bavelier-attention",
+    textMatch: "Green, C. S., & Bavelier, D.",
+    searchQuery: "Green Bavelier 2003 action video games visual selective attention Nature",
+    category: "research",
+    section: "sources",
+  },
 ];
 
 export function findClaimInText(text: string): VerifiableClaim | null {
