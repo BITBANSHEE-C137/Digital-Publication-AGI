@@ -49,6 +49,16 @@ export function Sidebar({ onOpenGlossary }: SidebarProps) {
           </a>
           <span className="text-muted-foreground/30 text-[11px]">|</span>
           <a
+            href="https://github.com/BITBANSHEE-C137"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            data-testid="link-sidebar-github"
+          >
+            GitHub
+          </a>
+          <span className="text-muted-foreground/30 text-[11px]">|</span>
+          <a
             href="mailto:gwrowe@gmail.com"
             className="font-sans text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
             data-testid="link-sidebar-email"
