@@ -244,6 +244,8 @@ export async function registerRoutes(
 export async function seedDatabase() {
   const existingSections = await storage.getSections();
   if (existingSections.length === 0) {
-    console.log("No sections found. Run 'npx tsx server/parse-and-seed.ts' to seed the database.");
+    console.log("No sections found, auto-seeding...");
+    const { seedIfEmpty } = await import("./seed-data");
+    await seedIfEmpty();
   }
 }
