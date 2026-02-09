@@ -61,6 +61,14 @@ app.use((req, res, next) => {
 
 (async () => {
   await registerRoutes(httpServer, app);
+  
+  // Seed the database with initial content
+  try {
+    const { seedDatabase } = await import("./routes");
+    await seedDatabase();
+  } catch (err) {
+    console.error("Failed to seed database:", err);
+  }
 
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
