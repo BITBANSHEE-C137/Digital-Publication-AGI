@@ -63,22 +63,41 @@ export function AudioPlayer({ slug, sectionTitle, onClose }: AudioPlayerProps) {
       if (!url) return;
 
       if (!audioRef.current) {
-        audioRef.current = new Audio(url);
-        audioRef.current.playbackRate = speed;
-        audioRef.current.muted = isMuted;
+        const audio = new Audio();
+        audio.preload = "auto";
+        audio.playbackRate = speed;
+        audio.muted = isMuted;
 
-        audioRef.current.addEventListener("loadedmetadata", () => {
-          setDuration(audioRef.current!.duration);
+        audio.addEventListener("loadedmetadata", () => {
+          setDuration(audio.duration);
         });
 
-        audioRef.current.addEventListener("ended", () => {
+        audio.addEventListener("ended", () => {
           setIsPlaying(false);
           setProgress(100);
         });
 
-        audioRef.current.addEventListener("error", () => {
+        audio.addEventListener("error", () => {
           setError("Playback error");
           setIsPlaying(false);
+        });
+
+        audioRef.current = audio;
+        audio.src = url;
+
+        await new Promise<void>((resolve, reject) => {
+          const onCanPlay = () => {
+            audio.removeEventListener("canplay", onCanPlay);
+            audio.removeEventListener("error", onError);
+            resolve();
+          };
+          const onError = () => {
+            audio.removeEventListener("canplay", onCanPlay);
+            audio.removeEventListener("error", onError);
+            reject(new Error("Failed to load audio"));
+          };
+          audio.addEventListener("canplay", onCanPlay);
+          audio.addEventListener("error", onError);
         });
       }
     }
