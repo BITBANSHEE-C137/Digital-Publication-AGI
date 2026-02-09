@@ -46,6 +46,8 @@ export default function SectionPage() {
     <ArticleLayout
       prevSection={prevSection}
       nextSection={nextSection}
+      currentSlug={section.slug}
+      currentTitle={section.title}
     >
       <article className="prose prose-lg md:prose-xl mx-auto" data-testid={`section-${section.slug}`}>
         <header className="mb-12 not-prose">
@@ -95,6 +97,7 @@ export default function SectionPage() {
               <span className="verifiable-claim ml-1" style={{ animation: 'none', cursor: 'default' }}>Glowing underlines</span> mark verifiable claims —
               click them to search the open web for independent evidence.
               Data visualizations appear inline where the paper presents statistics.
+              Click the <span className="font-mono text-accent/60 text-xs">LISTEN</span> button in the nav bar to hear any section read aloud.
             </p>
             <p className="font-mono text-[9px] text-muted-foreground/30 mt-3">
               Don't trust the messenger. Verify the source.

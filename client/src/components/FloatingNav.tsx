@@ -1,14 +1,15 @@
 import { Link, useLocation } from "wouter";
 import { useSections } from "@/hooks/use-sections";
 import { useState } from "react";
-import { ChevronDown, BookOpen, Home } from "lucide-react";
+import { ChevronDown, BookOpen, Home, Headphones } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FloatingNavProps {
   onOpenGlossary?: () => void;
+  onListenClick?: () => void;
 }
 
-export function FloatingNav({ onOpenGlossary }: FloatingNavProps) {
+export function FloatingNav({ onOpenGlossary, onListenClick }: FloatingNavProps) {
   const { data: sections } = useSections();
   const [location] = useLocation();
   const [navOpen, setNavOpen] = useState(false);
@@ -83,6 +84,16 @@ export function FloatingNav({ onOpenGlossary }: FloatingNavProps) {
         </div>
 
         <div className="flex items-center gap-2">
+          {onListenClick && (
+            <button
+              onClick={onListenClick}
+              className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground/60 hover-elevate px-2 py-1 rounded-md tracking-wider uppercase"
+              data-testid="button-nav-listen"
+            >
+              <Headphones className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Listen</span>
+            </button>
+          )}
           {onOpenGlossary && (
             <button
               onClick={onOpenGlossary}

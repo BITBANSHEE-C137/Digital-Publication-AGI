@@ -1,6 +1,7 @@
 import { FloatingNav } from "./FloatingNav";
 import { ReadingProgress } from "./ReadingProgress";
 import { GlossaryPanel } from "./GlossaryTooltip";
+import { AudioPlayer } from "./AudioPlayer";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactNode, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -11,16 +12,22 @@ interface ArticleLayoutProps {
   prevSection?: { slug: string; title: string } | null;
   nextSection?: { slug: string; title: string } | null;
   heroContent?: ReactNode;
+  currentSlug?: string;
+  currentTitle?: string;
 }
 
-export function ArticleLayout({ children, prevSection, nextSection, heroContent }: ArticleLayoutProps) {
+export function ArticleLayout({ children, prevSection, nextSection, heroContent, currentSlug, currentTitle }: ArticleLayoutProps) {
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const [audioOpen, setAudioOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground breathing-bg">
       <div className="scanline-overlay" />
       <ReadingProgress />
-      <FloatingNav onOpenGlossary={() => setGlossaryOpen(true)} />
+      <FloatingNav
+        onOpenGlossary={() => setGlossaryOpen(true)}
+        onListenClick={currentSlug ? () => setAudioOpen(true) : undefined}
+      />
 
       {heroContent && (
         <div className="relative">
@@ -91,6 +98,14 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent 
       </main>
 
       <GlossaryPanel isOpen={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
+
+      {audioOpen && currentSlug && (
+        <AudioPlayer
+          slug={currentSlug}
+          sectionTitle={currentTitle || "Section"}
+          onClose={() => setAudioOpen(false)}
+        />
+      )}
     </div>
   );
 }

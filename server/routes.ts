@@ -4,6 +4,27 @@ import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')
+    .replace(/^>\s+/gm, '')
+    .replace(/^[-*+]\s+/gm, '')
+    .replace(/^\d+\.\s+/gm, '')
+    .replace(/`{1,3}[^`]*`{1,3}/g, '')
+    .replace(/^---+$/gm, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+const ttsCache = new Map<string, { audio: Buffer; timestamp: number }>();
+const TTS_CACHE_TTL = 1000 * 60 * 60;
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -103,6 +124,118 @@ export async function registerRoutes(
         searchUrl: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
       });
     }
+  });
+
+  app.post("/api/tts", async (req, res) => {
+    const schema = z.object({
+      slug: z.string().min(1),
+    });
+
+    const parsed = schema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Invalid request", errors: parsed.error.issues });
+    }
+
+    const { slug } = parsed.data;
+    const apiKey = process.env.SPEECHIFY_API_KEY;
+
+    if (!apiKey) {
+      return res.status(503).json({ message: "Text-to-speech not configured" });
+    }
+
+    const cached = ttsCache.get(slug);
+    if (cached && Date.now() - cached.timestamp < TTS_CACHE_TTL) {
+      res.set("Content-Type", "audio/mpeg");
+      res.set("X-TTS-Cached", "true");
+      return res.send(cached.audio);
+    }
+
+    const section = await storage.getSectionBySlug(slug);
+    if (!section) {
+      return res.status(404).json({ message: "Section not found" });
+    }
+
+    const plainText = stripMarkdown(section.content);
+
+    const maxChars = 19000;
+    const inputText = plainText.length > maxChars
+      ? plainText.slice(0, maxChars)
+      : plainText;
+
+    try {
+      const chunkSize = 1900;
+      const chunks: string[] = [];
+      let remaining = inputText;
+      while (remaining.length > 0) {
+        if (remaining.length <= chunkSize) {
+          chunks.push(remaining);
+          break;
+        }
+        let splitAt = remaining.lastIndexOf('. ', chunkSize);
+        if (splitAt === -1 || splitAt < chunkSize * 0.5) {
+          splitAt = remaining.lastIndexOf(' ', chunkSize);
+        }
+        if (splitAt === -1) splitAt = chunkSize;
+        chunks.push(remaining.slice(0, splitAt + 1));
+        remaining = remaining.slice(splitAt + 1).trimStart();
+      }
+
+      const audioBuffers: Buffer[] = [];
+      for (const chunk of chunks) {
+        if (!chunk.trim()) continue;
+
+        const chunkResponse = await fetch("https://api.sws.speechify.com/v1/audio/speech", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input: chunk,
+            voice_id: "george",
+            audio_format: "mp3",
+          }),
+        });
+
+        if (!chunkResponse.ok) {
+          const errText = await chunkResponse.text();
+          console.error("Speechify API error on chunk:", chunkResponse.status, errText);
+          continue;
+        }
+
+        const chunkData = await chunkResponse.json();
+        if (chunkData.audio_data) {
+          audioBuffers.push(Buffer.from(chunkData.audio_data, "base64"));
+        }
+      }
+
+      if (audioBuffers.length === 0) {
+        return res.status(502).json({ message: "No audio data generated" });
+      }
+
+      const combinedBuffer = Buffer.concat(audioBuffers);
+
+      ttsCache.set(slug, { audio: combinedBuffer, timestamp: Date.now() });
+
+      res.set("Content-Type", "audio/mpeg");
+      if (audioBuffers.length < chunks.filter(c => c.trim()).length) {
+        res.set("X-TTS-Partial", "true");
+      }
+      res.send(combinedBuffer);
+    } catch (err) {
+      console.error("TTS error:", err);
+      res.status(500).json({ message: "Text-to-speech error" });
+    }
+  });
+
+  app.get("/api/tts/voices", async (_req, res) => {
+    res.json({
+      voices: [
+        { id: "george", name: "George", description: "Professional male voice" },
+        { id: "henry", name: "Henry", description: "Clear male voice" },
+      ],
+      default: "george",
+    });
   });
 
   return httpServer;

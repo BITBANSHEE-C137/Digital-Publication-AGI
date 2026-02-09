@@ -18,13 +18,16 @@ Preferred communication style: Simple, everyday language.
 - **Styling**: Tailwind CSS with CSS variables for theming. Editorial/academic design with serif fonts (Merriweather, Playfair Display) and warm paper-like palette. Home page hero section uses BitBanshee dark/teal imagery (background at `client/public/images/bitbanshee-bg.jpg`) with custom CSS classes in `index.css`
 - **Animations**: Framer Motion for page transitions and reveal animations
 - **Content Rendering**: `react-markdown` for rendering markdown content stored in the database
-- **Interactive Features**: Inline glossary term annotations (defined in `client/src/lib/glossary.ts`), collapsible sections, reading progress bar
+- **Interactive Features**: Inline glossary term annotations (defined in `client/src/lib/glossary.ts`), collapsible sections, reading progress bar, Speechify TTS audio playback per section
 
 ### Backend (Express)
 - **Framework**: Express 5 on Node.js with TypeScript (run via `tsx`)
-- **API**: Simple REST API with two endpoints:
+- **API**: REST API with endpoints:
   - `GET /api/sections` — returns all sections ordered by `order` field
   - `GET /api/sections/:slug` — returns a single section by slug
+  - `POST /api/evidence` — Perplexity-powered claim verification
+  - `POST /api/tts` — Speechify text-to-speech audio generation (chunks text into ~1900 char segments, caches results 1 hour)
+  - `GET /api/tts/voices` — available TTS voices
 - **API Contract**: Shared route definitions in `shared/routes.ts` with Zod validation schemas, used by both client and server
 - **Dev Server**: Vite dev server is integrated as middleware during development (see `server/vite.ts`), with HMR support
 - **Production**: Client is built to `dist/public`, server is bundled with esbuild to `dist/index.cjs`

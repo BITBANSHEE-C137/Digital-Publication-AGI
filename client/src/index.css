@@ -467,3 +467,104 @@
     hsl(var(--bb-teal) / 0.008) 4px
   );
 }
+
+/* ═══════════════════════════════════════════
+   AUDIO PLAYER — Cyberpunk floating bar
+   ═══════════════════════════════════════════ */
+
+.audio-player-bar {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--bb-dark) / 0.95) 0%,
+    hsl(230 15% 8% / 0.98) 100%
+  );
+  border-top: 1px solid hsl(var(--bb-teal) / 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 -4px 20px hsl(var(--bb-teal) / 0.08),
+    0 -1px 0 hsl(var(--bb-teal) / 0.1);
+}
+
+.audio-progress-track {
+  height: 3px;
+  background: hsl(var(--border) / 0.3);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.audio-progress-track:hover {
+  height: 5px;
+}
+
+.audio-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, hsl(var(--bb-teal)), hsl(var(--bb-magenta)));
+  border-radius: 2px;
+  transition: width 0.25s linear;
+  box-shadow: 0 0 8px hsl(var(--bb-teal) / 0.4);
+}
+
+.audio-control-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--accent) / 0.15);
+  border: 1px solid hsl(var(--accent) / 0.3);
+  color: hsl(var(--accent));
+  transition: all 0.2s ease;
+}
+
+.audio-control-btn:hover {
+  background: hsl(var(--accent) / 0.25);
+  box-shadow: 0 0 12px hsl(var(--accent) / 0.2);
+}
+
+.audio-control-btn-sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--muted-foreground) / 0.6);
+  transition: all 0.2s ease;
+}
+
+.audio-control-btn-sm:hover {
+  color: hsl(var(--foreground));
+  background: hsl(var(--accent) / 0.1);
+}
+
+.audio-speed-btn {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  color: hsl(var(--accent) / 0.7);
+  border: 1px solid hsl(var(--accent) / 0.2);
+  transition: all 0.2s ease;
+}
+
+.audio-speed-btn:hover {
+  color: hsl(var(--accent));
+  border-color: hsl(var(--accent) / 0.4);
+  background: hsl(var(--accent) / 0.08);
+}
+
+.audio-powered-by {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: hsl(var(--accent) / 0.3);
+  padding: 0.15rem 0.5rem;
+  border: 1px solid hsl(var(--accent) / 0.1);
+  border-radius: 0.15rem;
+}
