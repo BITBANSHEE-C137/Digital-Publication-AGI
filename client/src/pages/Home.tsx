@@ -166,14 +166,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-border/20 text-center space-y-2">
-          <p className="ai-meta-indicator" data-testid="text-ai-publisher">
-            THIS DOCUMENT IS FORMATTED AND PUBLISHED BY AI
-          </p>
-          <p className="font-mono text-[9px] text-muted-foreground/25" data-testid="text-bitbanshee-credit">
-            BitBanshee &middot; AI-Powered SaaS Studio
-          </p>
-        </div>
       </motion.div>
     </ArticleLayout>
   );

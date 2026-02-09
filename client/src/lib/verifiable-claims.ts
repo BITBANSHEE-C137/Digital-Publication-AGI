@@ -72,8 +72,8 @@ export const verifiableClaims: VerifiableClaim[] = [
   },
   {
     id: "soc2-compliance",
-    textMatch: "SOC 2 Type II requires demonstrable consistency in system behavior",
-    searchQuery: "SOC 2 Type II audit requirements consistent system behavior data handling",
+    textMatch: "fail SOC 2 Type II evaluation by definition",
+    searchQuery: "SOC 2 Type II audit requirements consistent system behavior compliance evaluation",
     category: "technical",
     section: "phase-transitions",
   },
@@ -100,8 +100,8 @@ export const verifiableClaims: VerifiableClaim[] = [
   },
   {
     id: "aaai-2025",
-    textMatch: "2025 AAAI Presidential Address",
-    searchQuery: "AAAI 2025 Presidential Address AI scaling limitations current approaches",
+    textMatch: "2025 AAAI Presidential Panel",
+    searchQuery: "AAAI 2025 Presidential Panel Future of AI Research scaling limitations survey",
     category: "research",
     section: "agi-pillars",
   },

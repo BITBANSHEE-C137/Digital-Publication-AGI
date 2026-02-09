@@ -70,16 +70,26 @@ export function NAEPDeclineViz() {
   return (
     <div className="data-viz" data-testid="viz-naep-decline">
       <div className="space-y-1 mb-4">
-        <h4 className="font-mono text-xs text-accent/70 tracking-wider uppercase">NAEP Long-Term Trends: 13-Year-Olds (2012-2023)</h4>
-        <p className="font-mono text-[10px] text-muted-foreground/50">Source: NCES/NAEP</p>
+        <h4 className="font-mono text-xs text-accent/70 tracking-wider uppercase">NAEP Long-Term Trends: 17-Year-Olds (1971-2020)</h4>
+        <p className="font-mono text-[10px] text-muted-foreground/50">Source: NCES/NAEP Long-Term Trend Assessments</p>
       </div>
-      <div className="space-y-3">
-        <DataBar label="Reading" value={-7} maxValue={20} color="teal" suffix=" pts" />
-        <DataBar label="Mathematics" value={-14} maxValue={20} color="magenta" suffix=" pts" />
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <span className="font-mono text-xs text-foreground/70">Reading</span>
+          <p className="font-mono text-[10px] text-muted-foreground/60">
+            Essentially flat 1970s-1990s. Peaked ~1988-1992. Has not recovered to peak levels since.
+          </p>
+        </div>
+        <div className="space-y-1">
+          <span className="font-mono text-xs text-foreground/70">Mathematics</span>
+          <p className="font-mono text-[10px] text-muted-foreground/60">
+            Rose modestly through late 1990s, then flattened.
+          </p>
+        </div>
       </div>
       <div className="mt-4 pt-3 border-t border-border/20">
         <p className="font-mono text-[10px] text-muted-foreground/40">
-          Largest math decline in 50+ years of assessment history
+          50+ years of assessment data for ages 9, 13, and 17
         </p>
       </div>
     </div>

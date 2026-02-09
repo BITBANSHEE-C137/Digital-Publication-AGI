@@ -86,12 +86,15 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
             </motion.div>
           )}
 
-          <div className="mt-16 pt-6 border-t border-border/20 text-center">
-            <p className="ai-meta-indicator">
+          <div className="mt-16 pt-6 border-t border-border/20 text-center space-y-2">
+            <p className="ai-meta-indicator" data-testid="text-ai-publisher">
               THIS DOCUMENT WAS FORMATTED AND PUBLISHED BY AN AI SYSTEM
             </p>
-            <p className="font-mono text-[9px] text-muted-foreground/25 mt-1">
+            <p className="font-mono text-[9px] text-muted-foreground/25" data-testid="text-bitbanshee-credit">
               Another dude in the mix &middot; BitBanshee
+            </p>
+            <p className="font-mono text-[8px] text-muted-foreground/15 mt-2" data-testid="text-production-url">
+              whenweoutsourcedthinking.siliconstrategy.ai
             </p>
           </div>
         </div>
