@@ -98,6 +98,25 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
             <p className="font-sans font-medium text-sm tracking-[0.2em] uppercase hero-author" data-testid="text-author">
               By Glenn Rowe
             </p>
+            <div className="flex items-center justify-center gap-3 mt-2">
+              <a
+                href="https://www.linkedin.com/in/gwrowe/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-xs tracking-wide hero-author opacity-60 hover:opacity-100 transition-opacity"
+                data-testid="link-author-linkedin"
+              >
+                LinkedIn
+              </a>
+              <span className="hero-author opacity-40 text-xs">|</span>
+              <a
+                href="mailto:gwrowe@gmail.com"
+                className="font-sans text-xs tracking-wide hero-author opacity-60 hover:opacity-100 transition-opacity"
+                data-testid="link-author-email"
+              >
+                gwrowe@gmail.com
+              </a>
+            </div>
           </div>
 
           <motion.div

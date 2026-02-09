@@ -37,6 +37,25 @@ export function Sidebar({ onOpenGlossary }: SidebarProps) {
             by Glenn Rowe
           </p>
         </Link>
+        <div className="flex items-center gap-2 mt-1.5">
+          <a
+            href="https://www.linkedin.com/in/gwrowe/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-sans text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            data-testid="link-sidebar-linkedin"
+          >
+            LinkedIn
+          </a>
+          <span className="text-muted-foreground/30 text-[11px]">|</span>
+          <a
+            href="mailto:gwrowe@gmail.com"
+            className="font-sans text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            data-testid="link-sidebar-email"
+          >
+            Email
+          </a>
+        </div>
       </div>
 
       <nav className="flex-1 overflow-y-auto custom-scrollbar pr-2">
