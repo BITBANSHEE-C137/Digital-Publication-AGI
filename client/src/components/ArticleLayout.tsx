@@ -1,4 +1,4 @@
-import { Sidebar } from "./Sidebar";
+import { FloatingNav } from "./FloatingNav";
 import { ReadingProgress } from "./ReadingProgress";
 import { GlossaryPanel } from "./GlossaryTooltip";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,9 +17,10 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent 
   const [glossaryOpen, setGlossaryOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-accent/20">
+    <div className="min-h-screen bg-background text-foreground breathing-bg">
+      <div className="scanline-overlay" />
       <ReadingProgress />
-      <Sidebar onOpenGlossary={() => setGlossaryOpen(true)} />
+      <FloatingNav onOpenGlossary={() => setGlossaryOpen(true)} />
 
       {heroContent && (
         <div className="relative">
@@ -27,8 +28,8 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent 
         </div>
       )}
 
-      <main className="lg:pl-72 min-h-screen pt-20 lg:pt-0">
-        <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 lg:px-16">
+      <main className="relative z-10 min-h-screen pt-14">
+        <div className="max-w-3xl mx-auto px-6 py-12 lg:py-20 lg:px-8">
           <AnimatePresence mode="wait">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -42,34 +43,34 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent 
           </AnimatePresence>
 
           {(prevSection || nextSection) && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-24 pt-10 border-t border-border grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="mt-24 pt-10 border-t border-border/30 grid grid-cols-1 md:grid-cols-2 gap-8"
             >
               <div className="flex flex-col items-start">
                 {prevSection && (
                   <Link href={`/section/${prevSection.slug}`} className="group w-full" data-testid="link-prev-section">
-                    <span className="flex items-center text-sm font-sans text-muted-foreground mb-2 group-hover:text-accent transition-colors">
-                      <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
+                    <span className="flex items-center text-xs font-mono text-muted-foreground/60 mb-2 tracking-wider uppercase">
+                      <ArrowLeft className="w-3.5 h-3.5 mr-2 transition-transform group-hover:-translate-x-1" />
                       Previous
                     </span>
-                    <span className="font-display text-lg font-medium block group-hover:underline decoration-border group-hover:decoration-accent decoration-1 underline-offset-4">
+                    <span className="font-display text-lg font-medium block text-foreground/80">
                       {prevSection.title}
                     </span>
                   </Link>
                 )}
               </div>
-              
+
               <div className="flex flex-col items-end text-right">
                 {nextSection && (
                   <Link href={`/section/${nextSection.slug}`} className="group w-full" data-testid="link-next-section">
-                    <span className="flex items-center justify-end text-sm font-sans text-muted-foreground mb-2 group-hover:text-accent transition-colors">
+                    <span className="flex items-center justify-end text-xs font-mono text-muted-foreground/60 mb-2 tracking-wider uppercase">
                       Next
-                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="w-3.5 h-3.5 ml-2 transition-transform group-hover:translate-x-1" />
                     </span>
-                    <span className="font-display text-lg font-medium block group-hover:underline decoration-border group-hover:decoration-accent decoration-1 underline-offset-4">
+                    <span className="font-display text-lg font-medium block text-foreground/80">
                       {nextSection.title}
                     </span>
                   </Link>
@@ -77,6 +78,15 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent 
               </div>
             </motion.div>
           )}
+
+          <div className="mt-16 pt-6 border-t border-border/20 text-center">
+            <p className="ai-meta-indicator">
+              THIS DOCUMENT WAS FORMATTED AND PUBLISHED BY AN AI SYSTEM
+            </p>
+            <p className="font-mono text-[9px] text-muted-foreground/25 mt-1">
+              Another dude in the mix &middot; BitBanshee
+            </p>
+          </div>
         </div>
       </main>
 

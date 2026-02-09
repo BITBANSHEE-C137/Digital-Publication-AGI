@@ -1,39 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Editorial Palette - Warm Paper & Sharp Ink */
-  --background: 40 20% 99%;
-  --foreground: 0 0% 10%;
-  
-  --primary: 0 0% 10%;
-  --primary-foreground: 40 20% 99%;
-  
-  --secondary: 40 10% 94%;
-  --secondary-foreground: 0 0% 10%;
-  
-  --muted: 40 10% 90%;
-  --muted-foreground: 0 0% 40%;
-  
-  --accent: 350 60% 35%; /* Academic Red */
-  --accent-foreground: 0 0% 100%;
-  
+  --background: 230 15% 6%;
+  --foreground: 200 20% 85%;
+
+  --primary: 200 20% 92%;
+  --primary-foreground: 230 15% 6%;
+
+  --secondary: 230 12% 12%;
+  --secondary-foreground: 200 20% 85%;
+
+  --muted: 230 10% 16%;
+  --muted-foreground: 200 10% 50%;
+
+  --accent: 185 95% 52%;
+  --accent-foreground: 230 15% 6%;
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 0 0% 85%;
-  --input: 0 0% 85%;
-  --ring: 0 0% 10%;
-  
+  --card: 230 12% 10%;
+  --card-foreground: 200 20% 85%;
+  --card-border: 230 10% 18%;
+
+  --popover: 230 12% 10%;
+  --popover-foreground: 200 20% 85%;
+  --popover-border: 230 10% 18%;
+
+  --border: 230 10% 18%;
+  --input: 230 10% 18%;
+  --ring: 185 95% 52%;
+
   --radius: 0.25rem;
 
-  /* Typography Variables */
   --font-sans: 'Inter', sans-serif;
   --font-serif: 'Merriweather', serif;
   --font-display: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --chart-1: 185 95% 52%;
+  --chart-2: 330 70% 55%;
+  --chart-3: 145 60% 45%;
+  --chart-4: 45 90% 55%;
+  --chart-5: 270 60% 55%;
+
+  --sidebar: 230 12% 8%;
+  --sidebar-foreground: 200 20% 85%;
+  --sidebar-border: 230 10% 15%;
+  --sidebar-ring: 185 95% 52%;
+  --sidebar-primary: 185 95% 52%;
+  --sidebar-primary-foreground: 230 15% 6%;
+  --sidebar-accent: 230 12% 14%;
+  --sidebar-accent-foreground: 200 20% 85%;
+
+  --bb-teal: 185 95% 52%;
+  --bb-magenta: 330 70% 55%;
+  --bb-dark: 230 15% 6%;
+  --bb-surface: 230 12% 10%;
 }
 
 @layer base {
@@ -41,10 +68,16 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased font-serif selection:bg-accent/20 selection:text-foreground;
+    @apply bg-background text-foreground antialiased font-serif;
+    selection {
+      background: hsla(185, 95%, 52%, 0.2);
+      color: inherit;
+    }
   }
-  
-  /* Global Typography Defaults */
+  ::selection {
+    background: hsla(185, 95%, 52%, 0.2);
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-bold tracking-tight text-primary;
   }
@@ -54,7 +87,6 @@
   }
 }
 
-/* Custom Scrollbar for Sidebar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -69,27 +101,52 @@
   background: hsl(var(--muted-foreground));
 }
 
-/* Prose/Markdown Styles */
+/* ═══════════════════════════════════════════
+   PROSE — Dark Intelligence Briefing Style
+   ═══════════════════════════════════════════ */
+
 .prose {
   @apply max-w-none text-foreground;
 }
 .prose h2 {
-  @apply text-2xl md:text-3xl font-display font-semibold mt-12 mb-6 text-primary;
+  @apply text-2xl md:text-3xl font-display font-semibold mt-16 mb-6 text-primary;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+.prose h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background: hsl(var(--accent));
+  opacity: 0.5;
 }
 .prose h3 {
-  @apply text-xl md:text-2xl font-display font-medium mt-8 mb-4 italic text-primary/90;
+  @apply text-xl md:text-2xl font-display font-medium mt-10 mb-4 text-primary/90;
 }
 .prose p {
-  @apply font-serif text-lg leading-8 text-foreground/90 mb-6;
+  @apply font-serif text-lg leading-[1.9] text-foreground/85 mb-6;
 }
 .prose blockquote {
-  @apply border-l-4 border-accent pl-6 py-2 my-8 italic text-xl font-display text-primary/80 bg-secondary/30 pr-4 rounded-r-lg;
+  @apply pl-6 py-3 my-8 text-xl font-display text-primary/80 pr-4;
+  border-left: 3px solid hsl(var(--accent) / 0.4);
+  background: hsl(var(--accent) / 0.03);
+  border-radius: 0 0.25rem 0.25rem 0;
 }
 .prose ul {
-  @apply list-disc list-outside ml-6 mb-6 space-y-2 marker:text-accent;
+  @apply list-disc list-outside ml-6 mb-6 space-y-2;
+}
+.prose ul li::marker {
+  color: hsl(var(--accent));
 }
 .prose ol {
-  @apply list-decimal list-outside ml-6 mb-6 space-y-2 marker:font-display marker:text-accent;
+  @apply list-decimal list-outside ml-6 mb-6 space-y-2;
+}
+.prose ol li::marker {
+  color: hsl(var(--accent));
+  font-family: var(--font-display);
 }
 .prose li {
   @apply font-serif text-lg leading-8 pl-2;
@@ -98,65 +155,315 @@
   @apply font-bold text-primary;
 }
 .prose a {
-  @apply text-accent underline underline-offset-4 decoration-accent/30 hover:decoration-accent transition-all duration-200;
+  color: hsl(var(--accent));
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: hsl(var(--accent) / 0.3);
+  transition: text-decoration-color 0.2s;
+}
+.prose a:hover {
+  text-decoration-color: hsl(var(--accent));
 }
 .prose code {
-  @apply font-mono text-sm bg-secondary px-1 py-0.5 rounded text-primary;
+  @apply font-mono text-sm px-1.5 py-0.5 rounded-md text-primary;
+  background: hsl(var(--secondary));
 }
 .prose pre {
-  @apply bg-secondary p-4 rounded-lg overflow-x-auto mb-6 border border-border/50;
+  @apply p-4 rounded-md overflow-x-auto mb-6;
+  background: hsl(var(--secondary));
+  border: 1px solid hsl(var(--border) / 0.5);
 }
 
-/* Hero Section - BitBanshee Dark Theme */
+/* ═══════════════════════════════════════════
+   HERO — BitBanshee Immersive
+   ═══════════════════════════════════════════ */
+
 .hero-dark-section {
-  background: #0a0a0f;
+  background: hsl(var(--bb-dark));
 }
 
 .hero-gradient-overlay {
   background: linear-gradient(
     to bottom,
-    rgba(10, 10, 15, 0.3) 0%,
-    rgba(10, 10, 15, 0.1) 30%,
-    rgba(10, 10, 15, 0.4) 70%,
-    rgba(10, 10, 15, 0.95) 100%
+    hsla(230, 15%, 6%, 0.2) 0%,
+    hsla(230, 15%, 6%, 0.05) 25%,
+    hsla(230, 15%, 6%, 0.15) 50%,
+    hsla(230, 15%, 6%, 0.6) 75%,
+    hsla(230, 15%, 6%, 0.97) 100%
   );
 }
 
 .hero-subtitle {
-  color: rgba(12, 239, 253, 0.7);
+  color: hsl(var(--bb-teal) / 0.7);
 }
 
 .hero-title {
-  color: #e8f4f8;
+  color: hsl(200, 20%, 95%);
 }
 
 .hero-title-accent {
-  color: rgba(12, 239, 253, 0.85);
+  color: hsl(var(--bb-teal) / 0.85);
 }
 
 .hero-divider {
-  background: linear-gradient(to right, transparent, rgba(12, 239, 253, 0.5), transparent);
+  background: linear-gradient(to right, transparent, hsl(var(--bb-teal) / 0.5), transparent);
 }
 
 .hero-description {
-  color: rgba(200, 220, 230, 0.7);
+  color: hsl(200, 20%, 75% / 0.7);
 }
 
 .hero-author {
-  color: rgba(200, 220, 230, 0.5);
+  color: hsl(200, 20%, 75% / 0.5);
 }
 
 .hero-cta-button {
-  background: rgba(12, 239, 253, 0.08) !important;
-  border-color: rgba(12, 239, 253, 0.3) !important;
-  color: rgba(12, 239, 253, 0.9) !important;
+  background: hsl(var(--bb-teal) / 0.08) !important;
+  border-color: hsl(var(--bb-teal) / 0.3) !important;
+  color: hsl(var(--bb-teal) / 0.9) !important;
   backdrop-filter: blur(10px);
 }
 
 .hero-loading {
-  color: rgba(200, 220, 230, 0.4);
+  color: hsl(200, 20%, 75% / 0.4);
 }
 
 .hero-scroll-hint {
-  color: rgba(12, 239, 253, 0.4);
+  color: hsl(var(--bb-teal) / 0.4);
+}
+
+/* ═══════════════════════════════════════════
+   VERIFIABLE CLAIMS — Pulsing / Breathing
+   ═══════════════════════════════════════════ */
+
+@keyframes claim-pulse {
+  0%, 100% {
+    border-bottom-color: hsl(var(--bb-teal) / 0.3);
+    text-shadow: 0 0 0px transparent;
+  }
+  50% {
+    border-bottom-color: hsl(var(--bb-teal) / 0.7);
+    text-shadow: 0 0 8px hsl(var(--bb-teal) / 0.15);
+  }
+}
+
+.verifiable-claim {
+  border-bottom: 2px solid hsl(var(--bb-teal) / 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: claim-pulse 4s ease-in-out infinite;
+  position: relative;
+}
+
+.verifiable-claim:hover {
+  border-bottom-color: hsl(var(--bb-teal) / 0.9);
+  text-shadow: 0 0 12px hsl(var(--bb-teal) / 0.2);
+  animation: none;
+}
+
+.verifiable-claim::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--bb-teal) / 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.verifiable-claim:hover::before {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════
+   BREATHING BACKGROUND — The Paper Lives
+   ═══════════════════════════════════════════ */
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.03;
+  }
+  50% {
+    opacity: 0.06;
+  }
+}
+
+.breathing-bg {
+  position: relative;
+}
+
+.breathing-bg::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, hsl(var(--bb-teal)) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, hsl(var(--bb-magenta)) 0%, transparent 70%);
+  animation: breathe 8s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════
+   FLOATING NAV — Minimal
+   ═══════════════════════════════════════════ */
+
+.floating-nav {
+  background: hsl(var(--bb-dark) / 0.85);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid hsl(var(--border) / 0.3);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION DIVIDERS — Intelligence Briefing
+   ═══════════════════════════════════════════ */
+
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--accent) / 0.3), transparent);
+  margin: 4rem 0;
+}
+
+.section-divider::before {
+  content: attr(data-label);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 1rem;
+  background: hsl(var(--background));
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: hsl(var(--accent) / 0.5);
+}
+
+/* ═══════════════════════════════════════════
+   EVIDENCE PANEL
+   ═══════════════════════════════════════════ */
+
+.evidence-panel {
+  background: hsl(var(--bb-surface));
+  border: 1px solid hsl(var(--accent) / 0.15);
+  box-shadow:
+    0 0 30px hsl(var(--bb-teal) / 0.05),
+    inset 0 1px 0 hsl(var(--accent) / 0.05);
+}
+
+.evidence-panel-header {
+  border-bottom: 1px solid hsl(var(--accent) / 0.1);
+  background: hsl(var(--accent) / 0.03);
+}
+
+/* ═══════════════════════════════════════════
+   DATA VISUALIZATION CONTAINERS
+   ═══════════════════════════════════════════ */
+
+.data-viz {
+  background: hsl(var(--secondary));
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: 0.25rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.data-viz::before {
+  content: 'DATA';
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  padding: 0 0.5rem;
+  background: hsl(var(--secondary));
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: hsl(var(--accent) / 0.5);
+}
+
+.data-bar {
+  height: 0.375rem;
+  border-radius: 2px;
+  transition: width 1s ease-out;
+  position: relative;
+}
+
+.data-bar-teal {
+  background: linear-gradient(90deg, hsl(var(--bb-teal) / 0.8), hsl(var(--bb-teal)));
+  box-shadow: 0 0 8px hsl(var(--bb-teal) / 0.3);
+}
+
+.data-bar-magenta {
+  background: linear-gradient(90deg, hsl(var(--bb-magenta) / 0.8), hsl(var(--bb-magenta)));
+  box-shadow: 0 0 8px hsl(var(--bb-magenta) / 0.3);
+}
+
+.data-bar-muted {
+  background: hsl(var(--muted-foreground) / 0.3);
+}
+
+/* ═══════════════════════════════════════════
+   META — AI Publisher Awareness
+   ═══════════════════════════════════════════ */
+
+@keyframes meta-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+.ai-meta-indicator {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: hsl(var(--accent) / 0.4);
+  animation: meta-pulse 6s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════
+   CHAPTER PROGRESS / READING PROGRESS
+   ═══════════════════════════════════════════ */
+
+.reading-progress-bar {
+  background: linear-gradient(90deg, hsl(var(--bb-teal)), hsl(var(--bb-magenta)));
+  box-shadow: 0 0 10px hsl(var(--bb-teal) / 0.5);
+}
+
+/* ═══════════════════════════════════════════
+   KEY INSIGHT — Dark theme
+   ═══════════════════════════════════════════ */
+
+.key-insight {
+  border-left: 3px solid hsl(var(--accent) / 0.5);
+  background: hsl(var(--accent) / 0.04);
+  border-radius: 0 0.25rem 0.25rem 0;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+}
+
+/* ═══════════════════════════════════════════
+   GRID SCANLINES (subtle effect)
+   ═══════════════════════════════════════════ */
+
+.scanline-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    hsl(var(--bb-teal) / 0.008) 2px,
+    hsl(var(--bb-teal) / 0.008) 4px
+  );
 }

@@ -9,7 +9,7 @@ import NotFound from "./not-found";
 export default function SectionPage() {
   const [, params] = useRoute("/section/:slug");
   const slug = params?.slug || "";
-  
+
   const { data: section, isLoading, isError } = useSection(slug);
   const { data: allSections } = useSections();
 
@@ -25,11 +25,6 @@ export default function SectionPage() {
             <Skeleton className="h-4 w-full bg-secondary" />
             <Skeleton className="h-4 w-full bg-secondary" />
             <Skeleton className="h-4 w-5/6 bg-secondary" />
-          </div>
-          <div className="space-y-4 pt-4">
-            <Skeleton className="h-4 w-full bg-secondary" />
-            <Skeleton className="h-4 w-11/12 bg-secondary" />
-            <Skeleton className="h-4 w-full bg-secondary" />
           </div>
         </div>
       </ArticleLayout>
@@ -48,21 +43,21 @@ export default function SectionPage() {
   const isReference = ["sources", "appendix"].includes(section.slug);
 
   return (
-    <ArticleLayout 
-      prevSection={prevSection} 
+    <ArticleLayout
+      prevSection={prevSection}
       nextSection={nextSection}
     >
       <article className="prose prose-lg md:prose-xl mx-auto" data-testid={`section-${section.slug}`}>
         <header className="mb-12 not-prose">
           <div className="flex items-center space-x-4 mb-6">
-            <span className="h-px flex-1 bg-border"></span>
-            <span className="font-mono text-sm text-accent uppercase tracking-widest">
+            <span className="h-px flex-1 bg-border/30"></span>
+            <span className="font-mono text-xs text-accent/50 uppercase tracking-[0.3em]">
               {isReference ? "Reference" : `Chapter ${String(section.order).padStart(2, '0')}`}
             </span>
-            <span className="h-px flex-1 bg-border"></span>
+            <span className="h-px flex-1 bg-border/30"></span>
           </div>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -89,16 +84,20 @@ export default function SectionPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <InteractiveContent content={section.content} />
+          <InteractiveContent content={section.content} sectionSlug={section.slug} />
         </motion.div>
 
         {section.slug === "intro" && (
-          <div className="not-prose mt-12 p-6 bg-secondary/30 rounded-md border border-border/50" data-testid="reading-guide">
-            <p className="font-sans text-sm text-muted-foreground mb-2 font-medium uppercase tracking-wider">How to read this</p>
-            <p className="font-serif text-base text-foreground/80 leading-relaxed">
-              Dotted underlines indicate key terms. Hover or tap them for quick definitions. 
-              Use the glossary button in the sidebar for a full reference. 
-              Some sections contain expandable deep-dives for additional context.
+          <div className="not-prose mt-12 data-viz" data-testid="reading-guide">
+            <p className="font-mono text-[10px] text-accent/50 mb-3 tracking-[0.2em] uppercase">HOW TO READ THIS</p>
+            <p className="font-serif text-sm text-foreground/60 leading-relaxed">
+              <span className="border-b border-dotted border-accent/40">Dotted underlines</span> indicate key terms — hover for definitions.
+              <span className="verifiable-claim ml-1" style={{ animation: 'none', cursor: 'default' }}>Glowing underlines</span> mark verifiable claims —
+              click them to search the open web for independent evidence.
+              Data visualizations appear inline where the paper presents statistics.
+            </p>
+            <p className="font-mono text-[9px] text-muted-foreground/30 mt-3">
+              Don't trust the messenger. Verify the source.
             </p>
           </div>
         )}

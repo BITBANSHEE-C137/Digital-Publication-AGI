@@ -17,9 +17,9 @@ export function ReadingProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-transparent">
+    <div className="fixed top-0 left-0 right-0 z-50 h-0.5 bg-transparent">
       <div
-        className="h-full bg-accent transition-[width] duration-150 ease-out"
+        className="h-full reading-progress-bar transition-[width] duration-150 ease-out"
         style={{ width: `${progress}%` }}
         data-testid="reading-progress-bar"
       />

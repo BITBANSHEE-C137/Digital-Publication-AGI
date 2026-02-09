@@ -9,8 +9,8 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden hero-dark-section">
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        style={{ backgroundImage: "url('/images/bitbanshee-bg.jpg')" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+        style={{ backgroundImage: "url('/images/bitbanshee-bg.png')" }}
         data-testid="hero-background"
       />
 
@@ -25,7 +25,7 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
         >
           <div className="space-y-4">
             <span
-              className="font-mono text-sm tracking-[0.3em] uppercase block hero-subtitle"
+              className="font-mono text-xs tracking-[0.3em] uppercase block hero-subtitle"
               data-testid="text-subtitle"
             >
               A Thought Experiment from 30 Years in the Machine
@@ -98,15 +98,19 @@ export default function Home() {
 
   return (
     <ArticleLayout heroContent={hero}>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        <h2 className="font-display text-2xl font-bold text-primary text-center mb-10" data-testid="text-toc-title">
-          Contents
-        </h2>
-        <div className="space-y-2">
+        <div className="mb-12">
+          <span className="font-mono text-[10px] tracking-widest uppercase text-accent/50 block mb-3" data-testid="text-toc-label">
+            TABLE OF CONTENTS
+          </span>
+          <div className="w-12 h-px bg-accent/30" />
+        </div>
+
+        <div className="space-y-1">
           {sortedSections
             .filter(s => !["sources", "appendix"].includes(s.slug))
             .map((section) => (
@@ -116,10 +120,10 @@ export default function Home() {
               className="flex items-baseline gap-4 py-3 px-4 rounded-md hover-elevate"
               data-testid={`link-toc-${section.slug}`}
             >
-              <span className="font-mono text-sm text-accent/60 w-8 flex-shrink-0">
+              <span className="font-mono text-xs text-accent/40 w-6 flex-shrink-0 text-right">
                 {String(section.order).padStart(2, '0')}
               </span>
-              <span className="font-display text-lg text-primary">
+              <span className="font-display text-lg text-foreground/85">
                 {section.title}
               </span>
             </Link>
@@ -127,11 +131,7 @@ export default function Home() {
 
           {sortedSections.filter(s => ["sources", "appendix"].includes(s.slug)).length > 0 && (
             <>
-              <div className="pt-4 pb-1 px-4">
-                <span className="text-xs font-sans font-medium text-muted-foreground/60 uppercase tracking-wider" data-testid="text-reference-label">
-                  Reference
-                </span>
-              </div>
+              <div className="section-divider my-4" data-label="REFERENCE" />
               {sortedSections
                 .filter(s => ["sources", "appendix"].includes(s.slug))
                 .map((section) => (
@@ -141,7 +141,10 @@ export default function Home() {
                   className="flex items-baseline gap-4 py-3 px-4 rounded-md hover-elevate"
                   data-testid={`link-toc-${section.slug}`}
                 >
-                  <span className="font-display text-lg text-primary">
+                  <span className="font-mono text-xs text-muted-foreground/40 w-6 flex-shrink-0 text-right">
+                    --
+                  </span>
+                  <span className="font-display text-base text-muted-foreground/70">
                     {section.title}
                   </span>
                 </Link>
@@ -150,8 +153,24 @@ export default function Home() {
           )}
         </div>
 
-        <div className="mt-16 pt-8 border-t border-border/40 text-center">
-          <p className="font-sans text-xs text-muted-foreground/50 tracking-wider uppercase" data-testid="text-bitbanshee-credit">
+        <div className="mt-16 data-viz">
+          <div className="space-y-2 text-center">
+            <p className="font-mono text-[10px] text-accent/40 tracking-widest uppercase">
+              INTERACTIVE FEATURES
+            </p>
+            <p className="font-serif text-sm text-muted-foreground/60 leading-relaxed max-w-md mx-auto">
+              Dotted underlines mark key terms. 
+              <span className="verifiable-claim" style={{ animation: 'none', cursor: 'default' }}>Glowing underlines</span> mark 
+              verifiable claims you can click to search for live evidence.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-16 pt-8 border-t border-border/20 text-center space-y-2">
+          <p className="ai-meta-indicator" data-testid="text-ai-publisher">
+            THIS DOCUMENT IS FORMATTED AND PUBLISHED BY AI
+          </p>
+          <p className="font-mono text-[9px] text-muted-foreground/25" data-testid="text-bitbanshee-credit">
             BitBanshee &middot; AI-Powered SaaS Studio
           </p>
         </div>
