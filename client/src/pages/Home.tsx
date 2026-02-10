@@ -120,11 +120,11 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
               </a>
               <span className="hero-author opacity-40 text-xs">|</span>
               <a
-                href="mailto:gwrowe@gmail.com"
+                href="mailto:glenn@siliconstrategy.ai"
                 className="font-sans text-xs tracking-wide hero-author opacity-60 hover:opacity-100 transition-opacity"
                 data-testid="link-author-email"
               >
-                gwrowe@gmail.com
+                glenn@siliconstrategy.ai
               </a>
             </div>
           </div>

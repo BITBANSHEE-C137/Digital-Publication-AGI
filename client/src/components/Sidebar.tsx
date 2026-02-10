@@ -59,7 +59,7 @@ export function Sidebar({ onOpenGlossary }: SidebarProps) {
           </a>
           <span className="text-muted-foreground/30 text-[11px]">|</span>
           <a
-            href="mailto:gwrowe@gmail.com"
+            href="mailto:glenn@siliconstrategy.ai"
             className="font-sans text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
             data-testid="link-sidebar-email"
           >
