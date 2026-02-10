@@ -24,7 +24,7 @@ function cleanupMarkdown(text: string): string {
 }
 
 async function parseDocx(): Promise<string> {
-  const filePath = path.join(process.cwd(), "attached_assets/When_We_Outsourced_Thinking_v3_1770663280670.docx");
+  const filePath = path.join(process.cwd(), "attached_assets/When_We_Outsourced_Thinking_v4_1770736742576.docx");
   const buffer = fs.readFileSync(filePath);
   const result = await mammoth.convertToMarkdown({ buffer });
   return unescapeMarkdown(result.value);
