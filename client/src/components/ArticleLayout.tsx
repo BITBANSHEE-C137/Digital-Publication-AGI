@@ -93,9 +93,15 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
             <p className="font-mono text-[9px] text-muted-foreground/25" data-testid="text-bitbanshee-credit">
               Another dude in the mix &middot; BitBanshee
             </p>
-            <p className="font-mono text-[8px] text-muted-foreground/15 mt-2" data-testid="text-production-url">
-              whenweoutsourcedthinking.siliconstrategy.ai
-            </p>
+            <div className="flex items-center justify-center gap-3 mt-2">
+              <Link href="/about" className="font-mono text-[9px] text-muted-foreground/30 hover:text-muted-foreground/60 transition-colors tracking-wider uppercase" data-testid="link-footer-about">
+                About
+              </Link>
+              <span className="text-muted-foreground/15 text-[9px]">&middot;</span>
+              <p className="font-mono text-[8px] text-muted-foreground/15" data-testid="text-production-url">
+                whenweoutsourcedthinking.siliconstrategy.ai
+              </p>
+            </div>
           </div>
         </div>
       </main>
