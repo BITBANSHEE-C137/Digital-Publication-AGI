@@ -8,6 +8,25 @@ Live at: [whenweoutsourcedthinking.siliconstrategy.ai](https://whenweoutsourcedt
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/hero.png" alt="Hero section with BitBanshee cyberpunk aesthetic" width="600" />
+</p>
+<p align="center"><em>Hero section with dark cyberpunk aesthetic and immersive background</em></p>
+
+<p align="center">
+  <img src="docs/screenshots/table-of-contents.png" alt="Table of contents and interactive features" width="600" />
+</p>
+<p align="center"><em>Navigable table of contents with interactive feature annotations</em></p>
+
+<p align="center">
+  <img src="docs/screenshots/footer.png" alt="Site footer" width="600" />
+</p>
+<p align="center"><em>Footer with interactive features guide and attribution</em></p>
+
+---
+
 ## About the Paper
 
 This paper argues that advancing AI capabilities and declining human cognitive oversight capacity are converging toward a critical failure condition: the **Safety Inversion**. Drawing on PIAAC, NAEP, and NAAL data, it documents sustained declines in foundational literacy and numeracy among U.S. adults and proposes a five-pillar operational definition of Artificial General Intelligence.
@@ -39,7 +58,7 @@ Written from 30 years inside the machine — from encrypted satellite communicat
 client/          # React frontend (Vite)
   src/
     components/  # UI components (sidebar, glossary, audio player, etc.)
-    pages/       # Route pages (Home, SectionPage, About)
+    pages/       # Route pages (Home, SectionPage)
     hooks/       # Custom React hooks
     lib/         # Utilities, glossary definitions, query client
   public/        # Static assets (PDF, images, robots.txt)
