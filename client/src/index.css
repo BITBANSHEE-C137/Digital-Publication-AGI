@@ -618,3 +618,63 @@
   border: 1px solid hsl(var(--accent) / 0.1);
   border-radius: 0.15rem;
 }
+
+/* ═══════════════════════════════════════════
+   LAB SIGNALS — Project Links
+   ═══════════════════════════════════════════ */
+
+@keyframes signal-pulse {
+  0%, 100% { opacity: 0.4; box-shadow: 0 0 0px hsl(var(--bb-teal) / 0); }
+  50% { opacity: 1; box-shadow: 0 0 6px hsl(var(--bb-teal) / 0.4); }
+}
+
+.lab-signal-card {
+  display: block;
+  padding: 1rem 1.25rem;
+  border: 1px solid hsl(var(--border) / 0.3);
+  border-radius: 0.25rem;
+  background: hsl(var(--secondary) / 0.5);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.lab-signal-card:hover {
+  border-color: hsl(var(--bb-teal) / 0.25);
+  background: hsl(var(--bb-teal) / 0.04);
+  box-shadow: 0 0 20px hsl(var(--bb-teal) / 0.06);
+}
+
+.lab-signal-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(var(--bb-teal) / 0.08);
+  border: 1px solid hsl(var(--bb-teal) / 0.2);
+  color: hsl(var(--bb-teal) / 0.6);
+  flex-shrink: 0;
+  margin-top: 2px;
+  animation: signal-pulse 4s ease-in-out infinite;
+}
+
+.lab-signal-card:hover .lab-signal-icon {
+  animation: none;
+  opacity: 1;
+  background: hsl(var(--bb-teal) / 0.12);
+  border-color: hsl(var(--bb-teal) / 0.4);
+  color: hsl(var(--bb-teal) / 0.9);
+  box-shadow: 0 0 10px hsl(var(--bb-teal) / 0.3);
+}
+
+.lab-signal-status {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  background: hsl(145, 60%, 45% / 0.1);
+  border: 1px solid hsl(145, 60%, 45% / 0.2);
+  color: hsl(145, 60%, 45% / 0.7);
+}

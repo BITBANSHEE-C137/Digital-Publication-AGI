@@ -2,7 +2,7 @@ import { ArticleLayout } from "@/components/ArticleLayout";
 import { useSections } from "@/hooks/use-sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, ArrowDown, Download, FileText } from "lucide-react";
+import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -12,6 +12,15 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+
+const LAB_PROJECTS = [
+  {
+    name: "The Observer",
+    tagline: "AI theatre review. Bots performing for bots. We're watching for the moment the performance becomes real.",
+    url: "https://the-observer.replit.app/",
+    status: "LIVE" as const,
+  },
+];
 
 const TLDR_PARAGRAPHS = [
   "What if the people responsible for keeping AI safe are losing the ability to do so, not because AI is too powerful, but because we've already stopped thinking for ourselves?",
@@ -339,6 +348,42 @@ export default function Home() {
             </p>
           </div>
         </div>
+
+        {LAB_PROJECTS.length > 0 && (
+          <div className="mt-20">
+            <div className="section-divider my-8" data-label="SIGNALS" />
+            <div className="space-y-3">
+              {LAB_PROJECTS.map((project) => (
+                <a
+                  key={project.name}
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lab-signal-card group"
+                  data-testid={`link-lab-${project.name.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="lab-signal-icon">
+                      <Radio className="w-3.5 h-3.5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-1.5">
+                        <span className="font-mono text-sm tracking-wide text-foreground/80 group-hover:text-accent/90 transition-colors">
+                          {project.name}
+                        </span>
+                        <span className="lab-signal-status">{project.status}</span>
+                        <ExternalLink className="w-3 h-3 text-muted-foreground/30 group-hover:text-accent/50 transition-colors ml-auto flex-shrink-0" />
+                      </div>
+                      <p className="font-serif text-sm text-muted-foreground/50 leading-relaxed group-hover:text-muted-foreground/70 transition-colors">
+                        {project.tagline}
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
       </motion.div>
     </ArticleLayout>
