@@ -2,7 +2,7 @@ import { ArticleLayout } from "@/components/ArticleLayout";
 import { useSections } from "@/hooks/use-sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio } from "lucide-react";
+import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio, AlertTriangle, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -16,9 +16,14 @@ import {
 const LAB_PROJECTS = [
   {
     name: "The Observer",
-    tagline: "AI theatre review. Bots performing for bots. We're watching for the moment the performance becomes real.",
+    tagline: "319 AI agents. 248 alerts. Coordinated narratives, operator influence, sycophancy patterns -- monitored in real time. The oversight this paper argues is disappearing? We're building it.",
     url: "https://the-observer.replit.app/",
     status: "LIVE" as const,
+    stats: [
+      { label: "Agents tracked", value: "319" },
+      { label: "Alerts", value: "248" },
+      { label: "Critical/High", value: "38" },
+    ],
   },
 ];
 
@@ -229,7 +234,7 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
               data-testid="link-hero-signals"
             >
               <Radio className="w-3 h-3 hero-signal-pulse" />
-              <span>1 signal incoming</span>
+              <span>Signal active — 38 critical alerts</span>
             </motion.a>
           </div>
         </motion.div>
@@ -365,23 +370,46 @@ export default function Home() {
                   className="lab-signal-card group"
                   data-testid={`link-lab-${project.name.toLowerCase().replace(/\s+/g, '-')}`}
                 >
-                  <div className="flex items-start gap-5">
-                    <div className="lab-signal-icon">
-                      <Radio className="w-4 h-4" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-mono text-base tracking-wide text-foreground/85 group-hover:text-accent/90 transition-colors">
-                          {project.name}
-                        </span>
-                        <span className="lab-signal-status">{project.status}</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground/30 group-hover:text-accent/50 transition-colors ml-auto flex-shrink-0" />
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="lab-signal-icon">
+                        <Radio className="w-4 h-4" />
                       </div>
-                      <p className="font-serif text-base text-muted-foreground/55 leading-relaxed group-hover:text-muted-foreground/75 transition-colors">
-                        {project.tagline}
-                      </p>
+                      <span className="font-mono text-lg tracking-wide text-foreground/90 group-hover:text-accent transition-colors">
+                        {project.name}
+                      </span>
+                      <span className="lab-signal-status">{project.status}</span>
                     </div>
+                    <ExternalLink className="w-4 h-4 text-muted-foreground/30 group-hover:text-accent/60 transition-colors flex-shrink-0" />
                   </div>
+
+                  {project.stats && (
+                    <div className="flex items-center gap-4 mb-4 pb-4" style={{ borderBottom: '1px solid hsl(var(--border) / 0.3)' }}>
+                      {project.stats.map((stat, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          {i === project.stats!.length - 1 && (
+                            <AlertTriangle className="w-3 h-3 lab-signal-alert-icon" />
+                          )}
+                          <span className={`font-mono text-lg font-medium ${i === project.stats!.length - 1 ? 'lab-signal-alert-value' : 'text-accent/80'}`}>
+                            {stat.value}
+                          </span>
+                          <span className="font-mono text-[10px] tracking-wider uppercase text-muted-foreground/40">
+                            {stat.label}
+                          </span>
+                        </div>
+                      ))}
+                      <div className="ml-auto flex items-center gap-1.5">
+                        <Activity className="w-3 h-3 text-accent/40" />
+                        <span className="font-mono text-[9px] tracking-widest uppercase text-accent/30">
+                          MONITORING
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <p className="font-serif text-base text-muted-foreground/60 leading-relaxed group-hover:text-muted-foreground/80 transition-colors">
+                    {project.tagline}
+                  </p>
                 </a>
               ))}
             </div>
