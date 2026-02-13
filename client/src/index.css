@@ -668,6 +668,19 @@
   box-shadow: 0 0 10px hsl(var(--bb-teal) / 0.3);
 }
 
+.hero-signal-teaser {
+  color: hsl(var(--bb-teal) / 0.35);
+  transition: color 0.3s ease;
+}
+
+.hero-signal-teaser:hover {
+  color: hsl(var(--bb-teal) / 0.7);
+}
+
+.hero-signal-pulse {
+  animation: signal-pulse 3s ease-in-out infinite;
+}
+
 .lab-signal-status {
   font-family: var(--font-mono);
   font-size: 0.55rem;

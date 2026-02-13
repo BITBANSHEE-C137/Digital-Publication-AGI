@@ -215,6 +215,22 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
               <Download className="w-3.5 h-3.5" />
               Download PDF
             </a>
+
+            <motion.a
+              href="#signals"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.5, duration: 1.5 }}
+              className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase hero-signal-teaser mt-4"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('signals')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              data-testid="link-hero-signals"
+            >
+              <Radio className="w-3 h-3 hero-signal-pulse" />
+              <span>1 signal incoming</span>
+            </motion.a>
           </div>
         </motion.div>
 
@@ -350,7 +366,7 @@ export default function Home() {
         </div>
 
         {LAB_PROJECTS.length > 0 && (
-          <div className="mt-20">
+          <div className="mt-20" id="signals">
             <div className="section-divider my-8" data-label="SIGNALS" />
             <div className="space-y-3">
               {LAB_PROJECTS.map((project) => (
