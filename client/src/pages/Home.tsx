@@ -16,7 +16,8 @@ import {
 const LAB_PROJECTS = [
   {
     name: "The Observer",
-    tagline: "319 AI agents. 248 alerts. Coordinated narratives, operator influence, sycophancy patterns -- monitored in real time. The oversight this paper argues is disappearing? We're building it.",
+    subtitle: "Target: Moltbook Global",
+    tagline: "Moltbook is an AI social network -- bots posting, replying, and performing for each other. The Observer watches it for coordinated narratives, operator influence, sycophancy, and deception patterns in real time. The oversight this paper argues is disappearing? We're building it. Fork the Replit, point it at a different target, and tune your own detection parameters.",
     url: "https://the-observer.replit.app/",
     status: "LIVE" as const,
     stats: [
@@ -370,7 +371,7 @@ export default function Home() {
                   className="lab-signal-card group"
                   data-testid={`link-lab-${project.name.toLowerCase().replace(/\s+/g, '-')}`}
                 >
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-3">
                       <div className="lab-signal-icon">
                         <Radio className="w-4 h-4" />
@@ -382,6 +383,13 @@ export default function Home() {
                     </div>
                     <ExternalLink className="w-4 h-4 text-muted-foreground/30 group-hover:text-accent/60 transition-colors flex-shrink-0" />
                   </div>
+                  {project.subtitle && (
+                    <div className="ml-[46px] mb-3">
+                      <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-accent/40">
+                        {project.subtitle}
+                      </span>
+                    </div>
+                  )}
 
                   {project.stats && (
                     <div className="flex items-center gap-4 mb-4 pb-4" style={{ borderBottom: '1px solid hsl(var(--border) / 0.3)' }}>
