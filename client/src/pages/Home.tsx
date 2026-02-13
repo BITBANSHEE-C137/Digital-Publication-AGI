@@ -352,7 +352,43 @@ export default function Home() {
           )}
         </div>
 
-        <div className="mt-16 data-viz">
+        {LAB_PROJECTS.length > 0 && (
+          <div className="mt-14" id="signals">
+            <div className="section-divider my-8" data-label="SIGNALS" />
+            <div className="space-y-4">
+              {LAB_PROJECTS.map((project) => (
+                <a
+                  key={project.name}
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lab-signal-card group"
+                  data-testid={`link-lab-${project.name.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  <div className="flex items-start gap-5">
+                    <div className="lab-signal-icon">
+                      <Radio className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="font-mono text-base tracking-wide text-foreground/85 group-hover:text-accent/90 transition-colors">
+                          {project.name}
+                        </span>
+                        <span className="lab-signal-status">{project.status}</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-muted-foreground/30 group-hover:text-accent/50 transition-colors ml-auto flex-shrink-0" />
+                      </div>
+                      <p className="font-serif text-base text-muted-foreground/55 leading-relaxed group-hover:text-muted-foreground/75 transition-colors">
+                        {project.tagline}
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-14 data-viz">
           <div className="space-y-2 text-center">
             <p className="font-mono text-[10px] text-accent/40 tracking-widest uppercase">
               INTERACTIVE FEATURES
@@ -364,42 +400,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-
-        {LAB_PROJECTS.length > 0 && (
-          <div className="mt-20" id="signals">
-            <div className="section-divider my-8" data-label="SIGNALS" />
-            <div className="space-y-3">
-              {LAB_PROJECTS.map((project) => (
-                <a
-                  key={project.name}
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="lab-signal-card group"
-                  data-testid={`link-lab-${project.name.toLowerCase().replace(/\s+/g, '-')}`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="lab-signal-icon">
-                      <Radio className="w-3.5 h-3.5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3 mb-1.5">
-                        <span className="font-mono text-sm tracking-wide text-foreground/80 group-hover:text-accent/90 transition-colors">
-                          {project.name}
-                        </span>
-                        <span className="lab-signal-status">{project.status}</span>
-                        <ExternalLink className="w-3 h-3 text-muted-foreground/30 group-hover:text-accent/50 transition-colors ml-auto flex-shrink-0" />
-                      </div>
-                      <p className="font-serif text-sm text-muted-foreground/50 leading-relaxed group-hover:text-muted-foreground/70 transition-colors">
-                        {project.tagline}
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
 
       </motion.div>
     </ArticleLayout>

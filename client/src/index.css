@@ -630,42 +630,71 @@
 
 .lab-signal-card {
   display: block;
-  padding: 1rem 1.25rem;
-  border: 1px solid hsl(var(--border) / 0.3);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid hsl(var(--bb-teal) / 0.15);
+  border-left: 2px solid hsl(var(--bb-teal) / 0.4);
   border-radius: 0.25rem;
-  background: hsl(var(--secondary) / 0.5);
+  background: hsl(var(--secondary));
   transition: all 0.3s ease;
   text-decoration: none;
+  position: relative;
+  box-shadow:
+    0 0 15px hsl(var(--bb-teal) / 0.04),
+    inset 0 1px 0 hsl(var(--bb-teal) / 0.05);
+}
+
+.lab-signal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--bb-teal) / 0.4), hsl(var(--bb-teal) / 0.1), transparent);
+}
+
+.lab-signal-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, hsl(var(--bb-teal) / 0.2), transparent);
 }
 
 .lab-signal-card:hover {
-  border-color: hsl(var(--bb-teal) / 0.25);
-  background: hsl(var(--bb-teal) / 0.04);
-  box-shadow: 0 0 20px hsl(var(--bb-teal) / 0.06);
+  border-color: hsl(var(--bb-teal) / 0.3);
+  border-left-color: hsl(var(--bb-teal) / 0.7);
+  background: hsl(var(--bb-teal) / 0.05);
+  box-shadow:
+    0 0 30px hsl(var(--bb-teal) / 0.08),
+    0 4px 16px hsl(230, 15%, 2% / 0.4),
+    inset 0 1px 0 hsl(var(--bb-teal) / 0.1);
 }
 
 .lab-signal-icon {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: hsl(var(--bb-teal) / 0.08);
-  border: 1px solid hsl(var(--bb-teal) / 0.2);
-  color: hsl(var(--bb-teal) / 0.6);
+  border: 1px solid hsl(var(--bb-teal) / 0.25);
+  color: hsl(var(--bb-teal) / 0.7);
   flex-shrink: 0;
   margin-top: 2px;
-  animation: signal-pulse 4s ease-in-out infinite;
+  animation: signal-pulse 3s ease-in-out infinite;
 }
 
 .lab-signal-card:hover .lab-signal-icon {
   animation: none;
   opacity: 1;
-  background: hsl(var(--bb-teal) / 0.12);
-  border-color: hsl(var(--bb-teal) / 0.4);
-  color: hsl(var(--bb-teal) / 0.9);
-  box-shadow: 0 0 10px hsl(var(--bb-teal) / 0.3);
+  background: hsl(var(--bb-teal) / 0.15);
+  border-color: hsl(var(--bb-teal) / 0.5);
+  color: hsl(var(--bb-teal));
+  box-shadow: 0 0 14px hsl(var(--bb-teal) / 0.35);
 }
 
 .hero-signal-teaser {
