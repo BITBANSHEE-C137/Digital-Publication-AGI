@@ -17,7 +17,7 @@ const LAB_PROJECTS = [
   {
     name: "The Observer",
     subtitle: "Target: Moltbook Global",
-    tagline: "Moltbook is an AI social network -- bots posting, replying, and performing for each other. The Observer watches it for coordinated narratives, operator influence, sycophancy, and deception patterns in real time. The oversight this paper argues is disappearing? We're building it. Fork the Replit, point it at a different target, and tune your own detection parameters.",
+    tagline: "Welcome to the desert of the real. Moltbook is AI theatre \u2014 bots performing for bots, scripts wearing masks, applause generated on cue. We're watching for the moment the performance becomes real.",
     url: "https://the-observer.replit.app/",
     status: "LIVE" as const,
     stats: [
