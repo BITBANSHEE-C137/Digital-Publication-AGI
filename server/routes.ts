@@ -42,6 +42,38 @@ export async function registerRoutes(
     res.json(section);
   });
 
+  const observerCache: { data: any; timestamp: number } = { data: null, timestamp: 0 };
+  const OBSERVER_CACHE_TTL = 1000 * 60 * 5;
+
+  app.get("/api/observer/stats", async (_req, res) => {
+    if (observerCache.data && Date.now() - observerCache.timestamp < OBSERVER_CACHE_TTL) {
+      return res.json({ ...observerCache.data, cached: true });
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const response = await fetch("https://the-observer.replit.app/api/stats", {
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        throw new Error(`Observer returned ${response.status}`);
+      }
+
+      const data = await response.json();
+      observerCache.data = { ...data, reachable: true, lastChecked: Date.now() };
+      observerCache.timestamp = Date.now();
+      res.json(observerCache.data);
+    } catch (err) {
+      if (observerCache.data) {
+        return res.json({ ...observerCache.data, reachable: false, cached: true });
+      }
+      res.json({ reachable: false, lastChecked: Date.now() });
+    }
+  });
+
   app.get("/api/search", async (req, res) => {
     const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
     if (!q || q.length < 2) {

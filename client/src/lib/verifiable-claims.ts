@@ -147,6 +147,13 @@ export const verifiableClaims: VerifiableClaim[] = [
     category: "research",
     section: "sources",
   },
+  {
+    id: "algorithmic-knowledge-erasure",
+    textMatch: "an algorithm that quietly deprioritizes what doesn't engage",
+    searchQuery: "algorithmic content curation deprioritization knowledge erasure engagement optimization information loss",
+    category: "technical",
+    section: "belief-ledger",
+  },
 ];
 
 export function findClaimInText(text: string): VerifiableClaim | null {
