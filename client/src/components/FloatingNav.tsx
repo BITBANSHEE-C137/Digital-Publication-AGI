@@ -1,15 +1,16 @@
 import { Link, useLocation } from "wouter";
 import { useSections } from "@/hooks/use-sections";
 import { useState } from "react";
-import { ChevronDown, BookOpen, Home, Headphones } from "lucide-react";
+import { ChevronDown, BookOpen, Home, Headphones, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FloatingNavProps {
   onOpenGlossary?: () => void;
   onListenClick?: () => void;
+  onSearchClick?: () => void;
 }
 
-export function FloatingNav({ onOpenGlossary, onListenClick }: FloatingNavProps) {
+export function FloatingNav({ onOpenGlossary, onListenClick, onSearchClick }: FloatingNavProps) {
   const { data: sections } = useSections();
   const [location] = useLocation();
   const [navOpen, setNavOpen] = useState(false);
@@ -84,6 +85,16 @@ export function FloatingNav({ onOpenGlossary, onListenClick }: FloatingNavProps)
         </div>
 
         <div className="flex items-center gap-2">
+          {onSearchClick && (
+            <button
+              onClick={onSearchClick}
+              className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground/60 hover-elevate px-2 py-1 rounded-md tracking-wider uppercase"
+              data-testid="button-nav-search"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Search</span>
+            </button>
+          )}
           {onListenClick && (
             <button
               onClick={onListenClick}

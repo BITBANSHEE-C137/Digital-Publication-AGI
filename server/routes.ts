@@ -42,6 +42,51 @@ export async function registerRoutes(
     res.json(section);
   });
 
+  app.get("/api/search", async (req, res) => {
+    const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
+    if (!q || q.length < 2) {
+      return res.json({ results: [] });
+    }
+
+    try {
+      const matches = await storage.searchSections(q);
+      const results = matches.map((section) => {
+        const plain = section.content
+          .replace(/^#{1,6}\s+/gm, '')
+          .replace(/\*\*([^*]+)\*\*/g, '$1')
+          .replace(/\*([^*]+)\*/g, '$1')
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+          .replace(/`{1,3}[^`]*`{1,3}/g, '');
+
+        const lower = plain.toLowerCase();
+        const idx = lower.indexOf(q.toLowerCase());
+        let snippet = "";
+        if (idx !== -1) {
+          const start = Math.max(0, idx - 80);
+          const end = Math.min(plain.length, idx + q.length + 80);
+          snippet = (start > 0 ? "..." : "") + plain.slice(start, end).trim() + (end < plain.length ? "..." : "");
+        }
+
+        const titleMatch = section.title.toLowerCase().includes(q.toLowerCase());
+        const count = (lower.match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'))?.length) || 0;
+
+        return {
+          slug: section.slug,
+          title: section.title,
+          order: section.order,
+          snippet,
+          titleMatch,
+          matchCount: count,
+        };
+      });
+
+      res.json({ results, query: q });
+    } catch (err) {
+      console.error("Search error:", err);
+      res.status(500).json({ message: "Search failed" });
+    }
+  });
+
   app.post("/api/evidence", async (req, res) => {
     const schema = z.object({
       query: z.string().min(1).max(500),

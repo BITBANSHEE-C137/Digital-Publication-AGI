@@ -2,13 +2,14 @@ import { FloatingNav } from "./FloatingNav";
 import { ReadingProgress } from "./ReadingProgress";
 import { GlossaryPanel } from "./GlossaryTooltip";
 import { AudioPlayer } from "./AudioPlayer";
+import { SearchModal } from "./SearchModal";
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 
 interface ArticleLayoutProps {
-  children: ReactNode;
+  children: ReactNode | ((openSearch: () => void) => ReactNode);
   prevSection?: { slug: string; title: string } | null;
   nextSection?: { slug: string; title: string } | null;
   heroContent?: ReactNode;
@@ -19,6 +20,20 @@ interface ArticleLayoutProps {
 export function ArticleLayout({ children, prevSection, nextSection, heroContent, currentSlug, currentTitle }: ArticleLayoutProps) {
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [audioOpen, setAudioOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const handleSearchToggle = useCallback(() => setSearchOpen(prev => !prev), []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground breathing-bg">
@@ -27,6 +42,7 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
       <FloatingNav
         onOpenGlossary={() => setGlossaryOpen(true)}
         onListenClick={currentSlug ? () => setAudioOpen(true) : undefined}
+        onSearchClick={handleSearchToggle}
       />
 
       {heroContent && (
@@ -45,7 +61,7 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="article-content"
             >
-              {children}
+              {typeof children === 'function' ? children(() => setSearchOpen(true)) : children}
             </motion.div>
           </AnimatePresence>
 
@@ -109,6 +125,8 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
           onClose={() => setAudioOpen(false)}
         />
       )}
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }

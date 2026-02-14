@@ -2,7 +2,7 @@ import { ArticleLayout } from "@/components/ArticleLayout";
 import { useSections } from "@/hooks/use-sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio, AlertTriangle, Activity } from "lucide-react";
+import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio, AlertTriangle, Activity, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -303,11 +303,27 @@ export default function Home() {
 
   return (
     <ArticleLayout heroContent={hero}>
+      {(openSearch) => (
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
+        <div className="mb-8">
+          <button
+            onClick={openSearch}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-md transition-colors"
+            style={{ background: 'hsl(var(--secondary) / 0.5)', border: '1px solid hsl(var(--border) / 0.3)' }}
+            data-testid="button-home-search"
+          >
+            <Search className="w-4 h-4 text-muted-foreground/40" />
+            <span className="text-sm text-muted-foreground/40 font-sans flex-1 text-left">Search across all sections...</span>
+            <kbd className="hidden md:inline-flex items-center gap-0.5 font-mono text-[10px] text-muted-foreground/25 px-1.5 py-0.5 rounded" style={{ background: 'hsl(var(--border) / 0.3)' }}>
+              Ctrl K
+            </kbd>
+          </button>
+        </div>
+
         <div className="mb-12">
           <span className="font-mono text-[10px] tracking-widest uppercase text-accent/50 block mb-3" data-testid="text-toc-label">
             TABLE OF CONTENTS
@@ -438,6 +454,7 @@ export default function Home() {
         </div>
 
       </motion.div>
+      )}
     </ArticleLayout>
   );
 }
