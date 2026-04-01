@@ -135,6 +135,16 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
               >
                 glenn@siliconstrategy.ai
               </a>
+              <span className="hero-author opacity-40 text-xs">|</span>
+              <a
+                href="https://bitbanshee.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-sans text-xs tracking-wide hero-author opacity-60 hover:opacity-100 transition-opacity"
+                data-testid="link-author-bitbanshee"
+              >
+                BitBanshee
+              </a>
             </div>
           </div>
 
