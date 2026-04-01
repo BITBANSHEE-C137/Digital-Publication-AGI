@@ -18,7 +18,7 @@ const LAB_PROJECTS = [
     name: "The Observer",
     subtitle: "Target: Moltbook Global",
     tagline: "Welcome to the desert of the real. Moltbook is AI theatre \u2014 bots performing for bots, scripts wearing masks, applause generated on cue. We're watching for the moment the performance becomes real.",
-    url: "https://the-observer.replit.app/",
+    url: "https://theobserver.bitbanshee.com/",
   },
 ];
 
