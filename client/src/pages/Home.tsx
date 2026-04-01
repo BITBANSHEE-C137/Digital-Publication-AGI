@@ -2,7 +2,7 @@ import { ArticleLayout } from "@/components/ArticleLayout";
 import { useSections } from "@/hooks/use-sections";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio, AlertTriangle, Activity, Search } from "lucide-react";
+import { ArrowRight, BookOpen, ArrowDown, Download, FileText, ExternalLink, Radio, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -19,7 +19,6 @@ const LAB_PROJECTS = [
     subtitle: "Target: Moltbook Global",
     tagline: "Welcome to the desert of the real. Moltbook is AI theatre \u2014 bots performing for bots, scripts wearing masks, applause generated on cue. We're watching for the moment the performance becomes real.",
     url: "https://the-observer.replit.app/",
-    liveStats: true,
   },
 ];
 
@@ -316,44 +315,10 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
   );
 }
 
-interface ObserverStats {
-  totalAgents?: number;
-  totalAlerts?: number;
-  totalAlertsCritical?: number;
-  activeAgents24h?: number;
-  postsLast24h?: number;
-  reachable?: boolean;
-  lastChecked?: number;
-  cached?: boolean;
-}
-
-function useObserverStats() {
-  const [stats, setStats] = useState<ObserverStats | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/observer/stats")
-      .then(r => r.json())
-      .then(data => { setStats(data); setLoading(false); })
-      .catch(() => setLoading(false));
-
-    const interval = setInterval(() => {
-      fetch("/api/observer/stats")
-        .then(r => r.json())
-        .then(data => setStats(data))
-        .catch(() => {});
-    }, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return { stats, loading };
-}
-
 export default function Home() {
   const { data: sections } = useSections();
   const sortedSections = sections?.sort((a, b) => a.order - b.order) || [];
   const firstSection = sortedSections[0];
-  const { stats: observerStats, loading: observerLoading } = useObserverStats();
 
   const hero = <HeroSection firstSectionSlug={firstSection?.slug} />;
 
@@ -451,15 +416,6 @@ export default function Home() {
                       <span className="font-mono text-lg tracking-wide text-foreground/90 group-hover:text-accent transition-colors">
                         {project.name}
                       </span>
-                      {project.liveStats && (
-                        observerLoading ? (
-                          <span className="font-mono text-[10px] tracking-widest uppercase text-muted-foreground/30">CONNECTING...</span>
-                        ) : observerStats?.reachable ? (
-                          <span className="lab-signal-status">LIVE</span>
-                        ) : (
-                          <span className="font-mono text-[10px] tracking-widest uppercase text-yellow-500/70">LAST KNOWN</span>
-                        )
-                      )}
                     </div>
                     <ExternalLink className="w-4 h-4 text-muted-foreground/30 group-hover:text-accent/60 transition-colors flex-shrink-0" />
                   </div>
@@ -468,48 +424,6 @@ export default function Home() {
                       <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-accent/40">
                         {project.subtitle}
                       </span>
-                    </div>
-                  )}
-
-                  {project.liveStats && observerStats && (
-                    <div className="flex flex-wrap items-center gap-4 mb-4 pb-4" style={{ borderBottom: '1px solid hsl(var(--border) / 0.3)' }}>
-                      {observerStats.totalAgents != null && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-lg font-medium text-accent/80">
-                            {observerStats.totalAgents.toLocaleString()}
-                          </span>
-                          <span className="font-mono text-[10px] tracking-wider uppercase text-muted-foreground/40">
-                            Agents tracked
-                          </span>
-                        </div>
-                      )}
-                      {observerStats.totalAlerts != null && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-lg font-medium text-accent/80">
-                            {observerStats.totalAlerts.toLocaleString()}
-                          </span>
-                          <span className="font-mono text-[10px] tracking-wider uppercase text-muted-foreground/40">
-                            Alerts
-                          </span>
-                        </div>
-                      )}
-                      {observerStats.totalAlertsCritical != null && (
-                        <div className="flex items-center gap-2">
-                          <AlertTriangle className="w-3 h-3 lab-signal-alert-icon" />
-                          <span className="font-mono text-lg font-medium lab-signal-alert-value">
-                            {observerStats.totalAlertsCritical.toLocaleString()}
-                          </span>
-                          <span className="font-mono text-[10px] tracking-wider uppercase text-muted-foreground/40">
-                            Critical
-                          </span>
-                        </div>
-                      )}
-                      <div className="ml-auto flex items-center gap-1.5">
-                        <Activity className="w-3 h-3 text-accent/40" />
-                        <span className="font-mono text-[9px] tracking-widest uppercase text-accent/30">
-                          {observerStats.reachable ? 'LIVE' : 'CACHED'}
-                        </span>
-                      </div>
                     </div>
                   )}
 

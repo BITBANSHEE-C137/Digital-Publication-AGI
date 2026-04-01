@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Search, X, ArrowRight, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Section } from "@/hooks/use-sections";
 
 interface SearchResult {
   slug: string;
@@ -53,12 +54,28 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
     }
     setLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q.trim())}`);
-      if (res.ok) {
-        const data = await res.json();
-        setResults(data.results || []);
-        setSearched(true);
-      }
+      const res = await fetch('/sections.json');
+      if (!res.ok) throw new Error('Failed to load sections');
+      const all: Section[] = await res.json();
+      const query = q.trim().toLowerCase();
+      const matched: SearchResult[] = all
+        .filter(s => s.title.toLowerCase().includes(query) || s.content.toLowerCase().includes(query))
+        .map(s => {
+          const titleMatch = s.title.toLowerCase().includes(query);
+          const contentLower = s.content.toLowerCase();
+          let matchCount = 0;
+          let idx = 0;
+          while ((idx = contentLower.indexOf(query, idx)) !== -1) { matchCount++; idx++; }
+          if (titleMatch) matchCount++;
+          const firstIdx = contentLower.indexOf(query);
+          const snippetStart = Math.max(0, firstIdx - 80);
+          const snippetEnd = Math.min(s.content.length, firstIdx + query.length + 80);
+          const snippet = (snippetStart > 0 ? '...' : '') + s.content.slice(snippetStart, snippetEnd) + (snippetEnd < s.content.length ? '...' : '');
+          return { slug: s.slug, title: s.title, order: s.order, snippet, titleMatch, matchCount };
+        })
+        .sort((a, b) => (b.titleMatch ? 1 : 0) - (a.titleMatch ? 1 : 0) || b.matchCount - a.matchCount);
+      setResults(matched);
+      setSearched(true);
     } catch {
       setResults([]);
       setSearched(true);

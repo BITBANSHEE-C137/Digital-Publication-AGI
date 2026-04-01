@@ -1,27 +1,38 @@
 import { useQuery } from "@tanstack/react-query";
-import { api, buildUrl } from "@shared/routes";
+
+export interface Section {
+  id: number;
+  slug: string;
+  title: string;
+  content: string;
+  order: number;
+  published: boolean;
+}
+
+const SECTIONS_URL = '/sections.json';
 
 export function useSections() {
-  return useQuery({
-    queryKey: [api.sections.list.path],
+  return useQuery<Section[]>({
+    queryKey: [SECTIONS_URL],
     queryFn: async () => {
-      const res = await fetch(api.sections.list.path);
+      const res = await fetch(SECTIONS_URL);
       if (!res.ok) throw new Error("Failed to fetch sections");
-      return api.sections.list.responses[200].parse(await res.json());
+      return res.json();
     },
+    staleTime: Infinity,
   });
 }
 
 export function useSection(slug: string) {
-  return useQuery({
-    queryKey: [api.sections.get.path, slug],
+  return useQuery<Section | null>({
+    queryKey: [SECTIONS_URL, slug],
     queryFn: async () => {
-      const url = buildUrl(api.sections.get.path, { slug });
-      const res = await fetch(url);
-      if (res.status === 404) return null;
-      if (!res.ok) throw new Error("Failed to fetch section");
-      return api.sections.get.responses[200].parse(await res.json());
+      const res = await fetch(SECTIONS_URL);
+      if (!res.ok) throw new Error("Failed to fetch sections");
+      const sections: Section[] = await res.json();
+      return sections.find(s => s.slug === slug) ?? null;
     },
     enabled: !!slug,
+    staleTime: Infinity,
   });
 }

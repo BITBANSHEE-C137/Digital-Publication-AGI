@@ -1,7 +1,6 @@
 import { FloatingNav } from "./FloatingNav";
 import { ReadingProgress } from "./ReadingProgress";
 import { GlossaryPanel } from "./GlossaryTooltip";
-import { AudioPlayer } from "./AudioPlayer";
 import { SearchModal } from "./SearchModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactNode, useState, useEffect, useCallback } from "react";
@@ -19,7 +18,6 @@ interface ArticleLayoutProps {
 
 export function ArticleLayout({ children, prevSection, nextSection, heroContent, currentSlug, currentTitle }: ArticleLayoutProps) {
   const [glossaryOpen, setGlossaryOpen] = useState(false);
-  const [audioOpen, setAudioOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   const handleSearchToggle = useCallback(() => setSearchOpen(prev => !prev), []);
@@ -41,7 +39,6 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
       <ReadingProgress />
       <FloatingNav
         onOpenGlossary={() => setGlossaryOpen(true)}
-        onListenClick={currentSlug ? () => setAudioOpen(true) : undefined}
         onSearchClick={handleSearchToggle}
       />
 
@@ -117,14 +114,6 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
       </main>
 
       <GlossaryPanel isOpen={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
-
-      {audioOpen && currentSlug && (
-        <AudioPlayer
-          slug={currentSlug}
-          sectionTitle={currentTitle || "Section"}
-          onClose={() => setAudioOpen(false)}
-        />
-      )}
 
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
