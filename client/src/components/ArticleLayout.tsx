@@ -104,7 +104,8 @@ export function ArticleLayout({ children, prevSection, nextSection, heroContent,
               THIS DOCUMENT WAS FORMATTED AND PUBLISHED BY AN AI SYSTEM
             </p>
             <p className="font-mono text-[9px] text-muted-foreground/25" data-testid="text-bitbanshee-credit">
-              Another dude in the mix &middot; BitBanshee
+              Another dude in the mix &middot;{" "}
+              <a href="https://bitbanshee.com" target="_blank" rel="noopener noreferrer" className="hover:text-muted-foreground/50 transition-colors">BitBanshee</a>
             </p>
             <p className="font-mono text-[8px] text-muted-foreground/15 mt-2" data-testid="text-production-url">
               whenweoutsourcedthinking.siliconstrategy.ai
