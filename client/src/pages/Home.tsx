@@ -208,15 +208,13 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
             )}
 
             <a
-              href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6212581"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/When_We_Outsourced_Thinking.pdf"
+              download
               className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
               data-testid="link-download-pdf"
             >
               <Download className="w-3.5 h-3.5" />
               Download PDF
-              <ExternalLink className="w-3 h-3 opacity-50" />
             </a>
 
             <motion.a
@@ -276,15 +274,13 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
               </Link>
             )}
             <a
-              href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6212581"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/When_We_Outsourced_Thinking.pdf"
+              download
               className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
               data-testid="link-tldr-download-pdf"
             >
               <Download className="w-3.5 h-3.5" />
               Download PDF
-              <ExternalLink className="w-3 h-3 opacity-50" />
             </a>
           </div>
         </DialogContent>
