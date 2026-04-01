@@ -207,29 +207,17 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
               <div className="animate-pulse hero-loading" data-testid="text-hero-loading">Loading content...</div>
             )}
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6212581"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
-                data-testid="link-ssrn-paper"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                Published on SSRN
-                <ExternalLink className="w-3 h-3 opacity-50" />
-              </a>
-              <span className="hero-author opacity-20 text-xs">|</span>
-              <a
-                href="/When_We_Outsourced_Thinking.pdf"
-                download
-                className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
-                data-testid="link-download-pdf"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Download PDF
-              </a>
-            </div>
+            <a
+              href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6212581"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
+              data-testid="link-download-pdf"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download PDF
+              <ExternalLink className="w-3 h-3 opacity-50" />
+            </a>
 
             <motion.a
               href="#signals"
@@ -287,28 +275,17 @@ function HeroSection({ firstSectionSlug }: { firstSectionSlug?: string }) {
                 </Button>
               </Link>
             )}
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6212581"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
-                data-testid="link-tldr-ssrn"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                SSRN
-                <ExternalLink className="w-3 h-3 opacity-50" />
-              </a>
-              <a
-                href="/When_We_Outsourced_Thinking.pdf"
-                download
-                className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
-                data-testid="link-tldr-download-pdf"
-              >
-                <Download className="w-3.5 h-3.5" />
-                PDF
-              </a>
-            </div>
+            <a
+              href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6212581"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase hero-download-link"
+              data-testid="link-tldr-download-pdf"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download PDF
+              <ExternalLink className="w-3 h-3 opacity-50" />
+            </a>
           </div>
         </DialogContent>
       </Dialog>
